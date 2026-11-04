@@ -92,11 +92,22 @@ DAILY_ANALYSIS_CAP=15
    - **Causa:** La carpeta `node_modules/.bin` no tenía los ejecutables de Windows generados.
    - **Solución:** Ya se crearon los shims (`node_modules/.bin/next.cmd` y `next`). Si alguna vez vuelve a ocurrir, puedes ejecutar directamente: `node ./node_modules/next/dist/bin/next dev`.
 
-2. **Error: `Port 3000 is already in use`**:
-   - **Causa:** Hay otro proceso ocupando el puerto 3000.
-   - **Solución:** Puedes matar el proceso anterior o ejecutar Next.js en otro puerto:
+2. **Error: `Port 3000 is already in use` o `listen EADDRINUSE :::3000`**:
+   - **Causa:** Un proceso anterior de Node.js quedó congelado o en segundo plano ocupando el puerto 3000.
+   - **Solución rápida en PowerShell:**
+     ```powershell
+     # 1. Encontrar el PID del proceso
+     netstat -ano | findstr :3000
+
+     # 2. Terminar el proceso por su PID (ejemplo PID 3284)
+     taskkill /F /PID <NUMERO_PID>
+
+     # 3. Relanzar el servidor
+     npm run dev
+     ```
+   - **Alternativa:** También puedes ejecutar Next.js en otro puerto libre:
      ```powershell
      npx next dev -p 3001
      ```
-     Y abrirás en su lugar: `http://localhost:3001`.
+     Y abrir en su lugar: `http://localhost:3001`.
 

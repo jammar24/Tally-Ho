@@ -134,13 +134,14 @@ export function DisputeGrid({ disputes }: DisputeGridProps) {
         const isLive = params.value === 'paypal';
         return (
           <span
-            className={`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold border ${
+            className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold border ${
               isLive
                 ? 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800'
                 : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-300 dark:border-slate-700'
             }`}
           >
-            {isLive ? '🟢 Live Sandbox' : 'Demo data'}
+            <span className={`w-1.5 h-1.5 rounded-full ${isLive ? 'bg-emerald-500' : 'bg-slate-400'}`} />
+            <span>{isLive ? 'Live Sandbox' : 'Demo data'}</span>
           </span>
         );
       },
@@ -154,9 +155,9 @@ export function DisputeGrid({ disputes }: DisputeGridProps) {
         return (
           <Link
             href={`/disputes/${params.data.id}`}
-            className="inline-flex items-center justify-center px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded shadow-xs transition-colors"
+            className="inline-flex items-center justify-center px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg shadow-xs transition-colors"
           >
-            {language === 'es' ? '⚡ Analizar' : '⚡ Analyze Case'}
+            {language === 'es' ? 'Analizar' : 'Analyze Case'}
           </Link>
         );
       },

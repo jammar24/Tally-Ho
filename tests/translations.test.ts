@@ -18,6 +18,9 @@ describe('Bilingual Translations (EN / ES)', () => {
     const requiredKeys = [
       'nav.home',
       'nav.inbox',
+      'nav.merchant',
+      'nav.admin',
+      'nav.portal',
       'nav.insights',
       'nav.orders',
       'nav.about',

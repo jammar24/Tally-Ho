@@ -3,10 +3,13 @@ export type Language = 'en' | 'es';
 export const translations = {
   en: {
     // Nav
-    'nav.brand': 'DisputeDesk',
-    'nav.agent': 'AI Agent',
+    'nav.brand': 'Tally-Ho',
+    'nav.agent': 'Dispute Engine',
     'nav.home': 'Home',
     'nav.inbox': 'Disputes Inbox',
+    'nav.merchant': 'Merchant Hub',
+    'nav.admin': 'Admin Dashboard',
+    'nav.portal': 'Customer Portal',
     'nav.insights': 'Insights',
     'nav.orders': 'Sandbox Orders',
     'nav.about': 'About',
@@ -14,6 +17,24 @@ export const translations = {
     'nav.auth': 'Sign In',
     'nav.out': 'Sign Out',
     'nav.guard': 'Agent Guard: Active',
+
+    // Merchant Hub
+    'merchant.title': 'Merchant Evidence & Defense Hub',
+    'merchant.subtitle': 'Manage your sandbox store, upload proof of delivery, and trigger AI dispute packages.',
+    'merchant.vault.title': 'Evidence Vault (Proofs & Invoices)',
+    'merchant.vault.upload': 'Upload Shipping Proof (PDF/JPG)',
+    'merchant.settings.title': 'PayPal Sandbox Merchant Settings',
+    'merchant.autoDefense': 'Autonomous AI Defense',
+
+    // Admin Login Gate
+    'admin.login.title': 'Executive Admin Gate',
+    'admin.login.subtitle': 'Restricted executive access. Please authenticate with administrator credentials.',
+    'admin.login.emailLabel': 'Administrator Email',
+    'admin.login.passLabel': 'Administrator Password',
+    'admin.login.btn': 'Unlock Admin Dashboard',
+    'admin.login.badge': 'Executive Security Gate',
+    'admin.login.hint': 'Hackathon Demo Credentials: admin@disputedesk.ai / Admin2026!',
+    'admin.login.error': 'Invalid credentials. Please use the authorized demo credentials.',
 
     // Sandbox Banner
     'banner.title': 'SANDBOX ENVIRONMENT:',
@@ -31,7 +52,7 @@ export const translations = {
     'home.stats.injection': 'Prompt Injection Defense',
     'home.stats.guard': 'Zero Hallucinations Guard',
 
-    'home.pillars.title': 'How DisputeDesk Protects Merchants',
+    'home.pillars.title': 'How Tally-Ho Protects Merchants',
     'home.pillars.subtitle': 'Combining read-only bounded AI reasoning with verifiable human-in-the-loop approval.',
 
     'home.p1.title': '1. Multimodal Document Reading',
@@ -54,7 +75,7 @@ export const translations = {
     'home.demo.subtitle': 'Explore synthetic cases modeling real PayPal dispute scenarios.',
     'home.demo.viewAll': 'View all cases in AG Grid →',
 
-    // Inbox
+    // Inbox & Live Stream
     'inbox.title': 'Disputes Inbox',
     'inbox.subtitle': 'Resolve merchant disputes with verifiable evidence, grounded drafting, and human approval.',
     'inbox.mode': 'Mode: Auto (Sandbox + Demo Data)',
@@ -68,6 +89,9 @@ export const translations = {
     'inbox.poweredBy': 'Powered by AG Grid Community • Click any dispute to inspect case evidence',
     'inbox.analyze': '⚡ Analyze Case',
     'inbox.notice': 'Notice: All mock cases are labeled Demo data. Real sandbox disputes appear automatically when seeded in your PayPal Business developer account.',
+    'live.title': 'Live Resolution Stream',
+    'live.subtitle': 'Real-time trace of the AI agent resolving disputes transparently.',
+    'live.activeBadge': 'LIVE AGENT ACTIVITY',
 
     // Case View
     'case.back': '← Disputes Inbox',
@@ -119,20 +143,41 @@ export const translations = {
     'auth.switch': 'Switch Credentials',
     'auth.notice': 'Credentials remain strictly inside local session storage and server environment.',
 
+    // Admin Dashboard
+    'admin.title': 'Merchant Admin Dashboard',
+    'admin.subtitle': 'Executive oversight, AI guardrails control, and real-time dispute metrics.',
+    'admin.stats.winRate': 'Defense Win Rate',
+    'admin.stats.recovered': 'Protected Capital',
+    'admin.stats.avgTime': 'Avg Resolution Speed',
+    'admin.stats.hilRate': 'Human Approval Rate',
+    'admin.agentControl.title': 'AI Agent Policy & Guardrails',
+    'admin.urgent.title': 'Urgent Action Required (Response Deadlines)',
+
+    // Customer Portal
+    'portal.title': 'Customer Dispute & Resolution Portal',
+    'portal.subtitle': 'Track your claims transparently with verified carrier facts and direct merchant communication.',
+    'portal.searchPlaceholder': 'Search by Dispute ID (e.g., PP-D-7001) or Transaction...',
+    'portal.status.underReview': 'Under Review with Carrier Verification',
+    'portal.transparencyNotice': '100% Transparent: Every piece of evidence is verified against official carrier records.',
+    'portal.friendlyExplain': 'Explanation for Buyer',
+
     // About
-    'about.title': 'About DisputeDesk',
+    'about.title': 'About Tally-Ho',
     'about.subtitle': 'A submission for the PayPal AI Hackathon 2026.',
     'about.mission.title': 'Our Mission',
     'about.mission.text':
-      'Small merchants lose millions annually to disputed transactions, not because they are fraudulent sellers, but because gathering multi-source shipping proofs before tight deadlines is exhausting. DisputeDesk automates verifiable defense with total transparency.',
+      'Small merchants lose millions annually to disputed transactions, not because they are fraudulent sellers, but because gathering multi-source shipping proofs before tight deadlines is exhausting. Tally-Ho Dispute Engine automates verifiable defense with total transparency.',
     'about.tech.title': 'Technology Stack',
   },
   es: {
     // Nav
-    'nav.brand': 'DisputeDesk',
-    'nav.agent': 'Agente IA',
+    'nav.brand': 'Tally-Ho',
+    'nav.agent': 'Dispute Engine',
     'nav.home': 'Inicio',
     'nav.inbox': 'Bandeja de Disputas',
+    'nav.merchant': 'Portal Comerciante',
+    'nav.admin': 'Panel Admin',
+    'nav.portal': 'Portal Cliente',
     'nav.insights': 'Métricas',
     'nav.orders': 'Órdenes Sandbox',
     'nav.about': 'Acerca de',
@@ -140,6 +185,24 @@ export const translations = {
     'nav.auth': 'Iniciar Sesión',
     'nav.out': 'Cerrar Sesión (Out)',
     'nav.guard': 'Guardia de IA: Activa',
+
+    // Merchant Hub
+    'merchant.title': 'Centro de Evidencia y Defensa del Comerciante',
+    'merchant.subtitle': 'Administra tu tienda sandbox, sube pruebas de entrega y genera paquetes de disputa con IA.',
+    'merchant.vault.title': 'Bóveda de Evidencia (Guías y Facturas)',
+    'merchant.vault.upload': 'Subir Comprobante de Envío (PDF/JPG)',
+    'merchant.settings.title': 'Configuración de Tienda PayPal Sandbox',
+    'merchant.autoDefense': 'Defensa Autónoma con IA',
+
+    // Admin Login Gate
+    'admin.login.title': 'Control de Acceso de Administrador',
+    'admin.login.subtitle': 'Acceso ejecutivo restringido. Autentícate con credenciales de administrador.',
+    'admin.login.emailLabel': 'Correo de Administrador',
+    'admin.login.passLabel': 'Contraseña de Administrador',
+    'admin.login.btn': 'Desbloquear Panel de Administrador',
+    'admin.login.badge': 'Control de Seguridad Ejecutivo',
+    'admin.login.hint': 'Credenciales autorizadas para Demo: admin@disputedesk.ai / Admin2026!',
+    'admin.login.error': 'Credenciales incorrectas. Utiliza las credenciales autorizadas de prueba.',
 
     // Sandbox Banner
     'banner.title': 'ENTORNO SANDBOX:',
@@ -157,7 +220,7 @@ export const translations = {
     'home.stats.injection': 'Defensa Contra Inyección de Prompt',
     'home.stats.guard': 'Cero Alucinaciones en Datos',
 
-    'home.pillars.title': 'Cómo DisputeDesk Protege a los Comerciantes',
+    'home.pillars.title': 'Cómo Tally-Ho Protege a los Comerciantes',
     'home.pillars.subtitle': 'Combinando razonamiento acotado de solo lectura con aprobación humana obligatoria.',
 
     'home.p1.title': '1. Lectura Multimodal de Documentos',
@@ -180,7 +243,7 @@ export const translations = {
     'home.demo.subtitle': 'Explora casos sintéticos que modelan escenarios reales de disputas en PayPal.',
     'home.demo.viewAll': 'Ver todos los casos en AG Grid →',
 
-    // Inbox
+    // Inbox & Live Stream
     'inbox.title': 'Bandeja de Disputas',
     'inbox.subtitle': 'Resuelve disputas de comerciantes con evidencia comprobable, redacción fundamentada y aprobación humana.',
     'inbox.mode': 'Modo: Automático (Sandbox + Datos Demo)',
@@ -194,6 +257,9 @@ export const translations = {
     'inbox.poweredBy': 'Potenciado por AG Grid Community • Haz clic en cualquier disputa para inspeccionar evidencias',
     'inbox.analyze': '⚡ Analizar Caso',
     'inbox.notice': 'Aviso: Todos los casos de prueba están etiquetados como Datos Demo. Las disputas reales de sandbox aparecen automáticamente cuando se generan en tu cuenta de desarrollador de PayPal.',
+    'live.title': 'Transmisión de Resoluciones en Vivo',
+    'live.subtitle': 'Traza en tiempo real del agente de IA resolviendo disputas con transparencia.',
+    'live.activeBadge': 'ACTIVIDAD DEL AGENTE EN VIVO',
 
     // Case View
     'case.back': '← Bandeja de Disputas',
@@ -245,13 +311,30 @@ export const translations = {
     'auth.switch': 'Cambiar Credenciales',
     'auth.notice': 'Las credenciales se mantienen seguras en el almacenamiento local y entorno del servidor.',
 
+    // Admin Dashboard
+    'admin.title': 'Panel de Control del Comerciante',
+    'admin.subtitle': 'Supervisión ejecutiva, control de salvaguardas de IA y métricas en tiempo real.',
+    'admin.stats.winRate': 'Tasa de Éxito en Defensa',
+    'admin.stats.recovered': 'Capital Protegido',
+    'admin.stats.avgTime': 'Velocidad Promedio de Resolución',
+    'admin.stats.hilRate': 'Tasa de Aprobación Humana',
+    'admin.agentControl.title': 'Políticas y Salvaguardas del Agente IA',
+    'admin.urgent.title': 'Acción Urgente Requerida (Plazos de Respuesta)',
+
+    // Customer Portal
+    'portal.title': 'Portal de Resolución para Clientes',
+    'portal.subtitle': 'Sigue tus reclamos transparentemente con datos verificados de entrega y comunicación directa.',
+    'portal.searchPlaceholder': 'Buscar por ID de Disputa (ej. PP-D-7001) o Transacción...',
+    'portal.status.underReview': 'En Revisión con Verificación de Transporte',
+    'portal.transparencyNotice': '100% Transparente: Cada prueba se valida contra registros oficiales del transportista.',
+    'portal.friendlyExplain': 'Explicación para el Comprador',
+
     // About
-    'about.title': 'Acerca de DisputeDesk',
+    'about.title': 'Acerca de Tally-Ho',
     'about.subtitle': 'Proyecto para el PayPal AI Hackathon 2026.',
     'about.mission.title': 'Nuestra Misión',
     'about.mission.text':
-      'Los pequeños comerciantes pierden millones al año en disputas comerciales no por ser fraudulentos, sino porque recopilar pruebas de envío dispersas antes de plazos estrictos es agotador. DisputeDesk automatiza una defensa verificable con total transparencia.',
+      'Los pequeños comerciantes pierden millones al año en disputas comerciales no por ser fraudulentos, sino porque recopilar pruebas de envío dispersas antes de plazos estrictos es agotador. Tally-Ho Dispute Engine automatiza una defensa verificable con total transparencia.',
     'about.tech.title': 'Pila Tecnológica',
   },
 };
-
