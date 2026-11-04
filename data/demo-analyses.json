@@ -1,0 +1,78 @@
+{
+  "PP-D-7001": {
+    "disputeId": "PP-D-7001",
+    "origin": "cached",
+    "generatedAt": "2026-11-03T14:30:00Z",
+    "model": {
+      "provider": "gemini",
+      "primary": "gemini-2.5-flash"
+    },
+    "assessment": {
+      "strength": "strong",
+      "recommendation": "submit",
+      "reasons": [
+        "Verified proof of delivery with recipient signature matching buyer name.",
+        "Delivery address matches the PayPal seller protection eligible address exactly.",
+        "Tracking number confirmed with FedEx carrier API."
+      ],
+      "missing": []
+    },
+    "draftNote": "The order INV-2026-0891 was shipped via FedEx tracking 9400111899223192039123 on Oct 18, 2026. The shipment was successfully delivered to 742 Evergreen Terrace, Springfield on Oct 21, 2026 at 14:15 with recipient signature on file.",
+    "claimChecks": [
+      {
+        "claimType": "not_received",
+        "claimText": "Buyer claims package never arrived at home address.",
+        "status": "contradicted",
+        "factIds": ["F1", "F2", "F3", "F4"],
+        "reasoning": "FedEx delivery confirmation shows direct handover and signature on Oct 21."
+      }
+    ],
+    "facts": [
+      {
+        "id": "F1",
+        "kind": "tracking_number",
+        "value": "9400111899223192039123",
+        "source": { "tool": "read_document", "docId": "shipping_receipt.pdf", "page": 1, "quote": "Tracking: 9400111899223192039123" },
+        "verification": "text-layer"
+      },
+      {
+        "id": "F2",
+        "kind": "carrier",
+        "value": "FedEx",
+        "source": { "tool": "read_document", "docId": "shipping_receipt.pdf", "page": 1, "quote": "Carrier: FedEx Express" },
+        "verification": "text-layer"
+      },
+      {
+        "id": "F3",
+        "kind": "delivery_date",
+        "value": "2026-10-21T14:15:00Z",
+        "source": { "tool": "get_tracking", "quote": "Delivered: Oct 21, 2026 2:15 PM - Signed by Buyer" },
+        "verification": "code"
+      },
+      {
+        "id": "F4",
+        "kind": "shipping_address",
+        "value": "742 Evergreen Terrace, Springfield, OR 97477",
+        "source": { "tool": "get_merchant_order", "quote": "Ship To: 742 Evergreen Terrace, Springfield, OR 97477" },
+        "verification": "code"
+      }
+    ],
+    "items": [
+      { "type": "PROOF_OF_DELIVERY", "status": "ready", "factIds": ["F1", "F2", "F3"] },
+      { "type": "PROOF_OF_FULFILLMENT", "status": "ready", "factIds": ["F4"] }
+    ],
+    "sentences": [
+      { "text": "The order was shipped via {{fact:F2}} with tracking {{fact:F1}}.", "factIds": ["F1", "F2"] },
+      { "text": "Carrier records confirm package delivered to {{fact:F4}} on {{fact:F3}}.", "factIds": ["F3", "F4"] }
+    ],
+    "trace": [
+      { "n": 1, "tool": "get_dispute", "argsSummary": "id='PP-D-7001'", "resultSummary": "INR claim for $149.99 USD, buyer alleges non-delivery", "ms": 230, "ok": true },
+      { "n": 2, "tool": "get_transaction", "argsSummary": "id='8XY1234567890123A'", "resultSummary": "Confirmed gross amount $149.99, invoice INV-2026-0891", "ms": 190, "ok": true },
+      { "n": 3, "tool": "list_documents", "argsSummary": "disputeId='PP-D-7001'", "resultSummary": "Found invoice.pdf, shipping_receipt.pdf", "ms": 110, "ok": true },
+      { "n": 4, "tool": "read_document", "argsSummary": "docId='shipping_receipt.pdf'", "resultSummary": "Extracted FedEx tracking 9400111899223192039123 with verified text quote", "ms": 780, "ok": true },
+      { "n": 5, "tool": "get_tracking", "argsSummary": "carrier='FedEx', number='9400111899223192039123'", "resultSummary": "Status DELIVERED on Oct 21 with signature", "ms": 340, "ok": true },
+      { "n": 6, "tool": "claim_check", "argsSummary": "claims=['not_received'], facts=['F1','F2','F3','F4']", "resultSummary": "Claim CONTRADICTED by carrier delivery proof", "ms": 420, "ok": true }
+    ]
+  }
+}
+
