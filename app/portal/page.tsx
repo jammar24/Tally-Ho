@@ -2,7 +2,8 @@
 
 export const dynamic = 'force-dynamic';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useApp } from '@/context/AppContext';
 import Link from 'next/link';
 import {
@@ -30,8 +31,15 @@ interface CustomerDispute {
 
 export default function CustomerPortalPage() {
   const { t, language, user, switchRole } = useApp();
+  const router = useRouter();
   const [search, setSearch] = useState('');
   const [selectedCaseId, setSelectedCaseId] = useState<string>('PP-D-7001');
+
+  useEffect(() => {
+    if (user === null) {
+      router.replace('/auth');
+    }
+  }, [user, router]);
 
   const customerDisputes: CustomerDispute[] = [
     {

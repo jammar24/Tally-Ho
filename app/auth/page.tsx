@@ -36,16 +36,19 @@ export default function AuthPage() {
       setEmailInput('merchant-apex@sandbox.paypal.com');
       setRoleInput('merchant');
       login('merchant-apex@sandbox.paypal.com', 'Apex Gear Store (Merchant)', 'merchant');
+      window.open('/merchant', '_blank', 'noopener,noreferrer');
     } else if (role === 'customer') {
       setNameInput('John Doe (Buyer)');
       setEmailInput('buyer-john@sandbox.paypal.com');
       setRoleInput('customer');
       login('buyer-john@sandbox.paypal.com', 'John Doe (Buyer)', 'customer');
+      window.open('/portal', '_blank', 'noopener,noreferrer');
     } else {
       setNameInput('System Administrator');
       setEmailInput('admin@disputedesk.ai');
       setRoleInput('admin');
       login('admin@disputedesk.ai', 'System Administrator (Executive)', 'admin');
+      window.open('/admin', '_blank', 'noopener,noreferrer');
     }
   };
 
@@ -152,32 +155,41 @@ export default function AuthPage() {
                 </span>
               </div>
 
-              {/* Direct Route Links based on Role */}
+              {/* Direct Route Links based on Role — abren en nueva pestaña */}
               <div className="pt-4 flex flex-col gap-2">
                 {user.role === 'admin' ? (
-                  <Link
+                  <a
                     href="/admin"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-xl text-center shadow-xs transition-colors flex items-center justify-center gap-1.5"
                   >
                     <IconShield size={14} />
-                    <span>{language === 'es' ? 'Ir al Panel de Admin' : 'Go to Admin Dashboard'}</span>
-                  </Link>
+                    <span>{language === 'es' ? 'Abrir Panel de Admin' : 'Open Admin Dashboard'}</span>
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" className="opacity-70"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7zM14 3v2h3.59L7.76 14.83l1.41 1.41L19 5.41V9h2V3h-7z"/></svg>
+                  </a>
                 ) : user.role === 'merchant' ? (
-                  <Link
+                  <a
                     href="/merchant"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-xl text-center shadow-xs transition-colors flex items-center justify-center gap-1.5"
                   >
                     <IconStore size={14} />
-                    <span>{language === 'es' ? 'Ir al Portal Comerciante' : 'Go to Merchant Hub'}</span>
-                  </Link>
+                    <span>{language === 'es' ? 'Abrir Portal Comerciante' : 'Open Merchant Hub'}</span>
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" className="opacity-70"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7zM14 3v2h3.59L7.76 14.83l1.41 1.41L19 5.41V9h2V3h-7z"/></svg>
+                  </a>
                 ) : (
-                  <Link
+                  <a
                     href="/portal"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="w-full py-2.5 px-4 bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold rounded-xl text-center shadow-xs transition-colors flex items-center justify-center gap-1.5"
                   >
                     <IconUser size={14} />
-                    <span>{language === 'es' ? 'Ir a Mi Portal de Cliente' : 'Go to Customer Portal'}</span>
-                  </Link>
+                    <span>{language === 'es' ? 'Abrir Portal de Cliente' : 'Open Customer Portal'}</span>
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" className="opacity-70"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7zM14 3v2h3.59L7.76 14.83l1.41 1.41L19 5.41V9h2V3h-7z"/></svg>
+                  </a>
                 )}
 
                 <Link

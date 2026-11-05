@@ -9,7 +9,6 @@ import {
   IconBolt,
   IconStore,
   IconUser,
-  IconLock,
   IconAward,
   IconFile,
   IconScale,
@@ -21,7 +20,7 @@ import {
 } from '@/components/Icons';
 
 export default function HomePage() {
-  const { t } = useApp();
+  const { t, user } = useApp();
 
   const previewCases = [
     {
@@ -77,14 +76,14 @@ export default function HomePage() {
               <span>{t('home.hero.cta.inbox')}</span>
             </Link>
             <Link
-              href="/merchant"
+              href="/auth"
               className="w-full sm:w-auto px-6 py-3 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold rounded-xl border border-slate-200 dark:border-slate-700 transition-colors text-xs flex items-center justify-center gap-2"
             >
               <IconStore size={15} className="text-blue-600 dark:text-blue-400" />
               <span>{t('nav.merchant')}</span>
             </Link>
             <Link
-              href="/portal"
+              href="/auth"
               className="w-full sm:w-auto px-6 py-3 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold rounded-xl border border-slate-200 dark:border-slate-700 transition-colors text-xs flex items-center justify-center gap-2"
             >
               <IconUser size={15} className="text-purple-600 dark:text-purple-400" />
@@ -94,7 +93,7 @@ export default function HomePage() {
               href="/auth"
               className="w-full sm:w-auto px-6 py-3 bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold rounded-xl border border-slate-200 dark:border-slate-700 transition-colors text-xs flex items-center justify-center gap-2"
             >
-              <IconLock size={15} />
+              <IconShield size={15} />
               <span>PayPal Connect</span>
             </Link>
           </div>

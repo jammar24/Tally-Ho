@@ -31,13 +31,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const [language, setLanguageState] = useState<Language>('en');
   const [theme, setThemeState] = useState<'light' | 'dark'>('light');
-  const [user, setUser] = useState<User | null>({
-    name: 'ElectroTech Goods (Sandbox Store)',
-    email: 'merchant-test@sandbox.paypal.com',
-    role: 'merchant',
-    isSandbox: true,
-    storeName: 'ElectroTech Goods (Sandbox Store)',
-  });
+  const [user, setUser] = useState<User | null>(null);
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -127,8 +121,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   };
 
   const switchRole = (newRole: UserRole) => {
+    // Admin role requires verifyAdminCredentials — cannot be switched to directly
     if (newRole === 'admin') {
-      login('admin@disputedesk.ai', 'System Administrator (Executive)', 'admin');
+      console.warn('[SECURITY] switchRole to admin is blocked. Use verifyAdminCredentials.');
       return;
     }
     if (newRole === 'merchant') {

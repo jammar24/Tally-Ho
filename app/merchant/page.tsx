@@ -2,8 +2,9 @@
 
 export const dynamic = 'force-dynamic';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useApp } from '@/context/AppContext';
 import {
   IconStore,
@@ -32,8 +33,15 @@ interface EvidenceDoc {
 
 export default function MerchantPortalPage() {
   const { t, language, user, switchRole } = useApp();
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<'disputes' | 'vault' | 'settings'>('disputes');
   const [uploadSuccess, setUploadSuccess] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (user === null) {
+      router.replace('/auth');
+    }
+  }, [user, router]);
 
   const [documents, setDocuments] = useState<EvidenceDoc[]>([
     {
