@@ -9,6 +9,10 @@ export const metadata: Metadata = {
   title: 'Tally-Ho — Dispute Engine for PayPal Sandbox Disputes',
   description:
     'A human-approved AI dispute engine that reads merchant evidence and answers PayPal disputes with verifiable facts.',
+  icons: {
+    icon: '/logo.png',
+    apple: '/logo.png',
+  },
 };
 
 export default function RootLayout({

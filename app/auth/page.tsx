@@ -2,10 +2,10 @@
 
 export const dynamic = 'force-dynamic';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApp } from '@/context/AppContext';
-import { UserRole } from '@/context/AppContext';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   IconLock,
   IconStore,
@@ -13,272 +13,334 @@ import {
   IconShield,
   IconLogOut,
   IconCheck,
+  IconPayPal,
+  IconArrowRight,
 } from '@/components/Icons';
 
 export default function AuthPage() {
-  const { t, language, user, login } = useApp();
-  const [roleInput, setRoleInput] = useState<UserRole>('merchant');
-  const [nameInput, setNameInput] = useState('');
-  const [emailInput, setEmailInput] = useState('');
+  const { language, user, login, logout } = useApp();
+  const [isConnecting, setIsConnecting] = useState(false);
+  const [showAdvanced, setShowAdvanced] = useState(false);
 
-  const handleCustomConnect = (e: React.FormEvent) => {
-    e.preventDefault();
-    login(
-      emailInput || (roleInput === 'merchant' ? 'merchant-test@sandbox.paypal.com' : 'buyer-test@sandbox.paypal.com'),
-      nameInput || (roleInput === 'merchant' ? 'Sandbox Merchant Store' : 'Sandbox Consumer Buyer'),
-      roleInput
-    );
+  // Live PayPal Sandbox Connection Info
+  const [ppClientId, setPpClientId] = useState('');
+  const [ppClientSecret, setPpClientSecret] = useState('');
+  const [isTestingCustom, setIsTestingCustom] = useState(false);
+  const [ppStatus, setPpStatus] = useState<{
+    connected: boolean;
+    masked?: string;
+    message?: string;
+    error?: string;
+  } | null>(null);
+
+  useEffect(() => {
+    fetch('/api/paypal/connect')
+      .then((r) => r.json())
+      .then((data) => {
+        setPpStatus({ connected: data.connected, masked: data.maskedClientId });
+      })
+      .catch(() => {});
+  }, []);
+
+  // 1-Click One-Touch PayPal Connect
+  const handleOneClickConnect = () => {
+    setIsConnecting(true);
+    setTimeout(() => {
+      login(
+        'merchant-apex@sandbox.paypal.com',
+        'Apex Gear Store (PayPal Merchant)',
+        'merchant'
+      );
+      setIsConnecting(false);
+    }, 600);
   };
 
-  const handleQuickPreset = (role: 'merchant' | 'customer' | 'admin') => {
-    if (role === 'merchant') {
-      setNameInput('Apex Gear Store');
-      setEmailInput('merchant-apex@sandbox.paypal.com');
-      setRoleInput('merchant');
-      login('merchant-apex@sandbox.paypal.com', 'Apex Gear Store (Merchant)', 'merchant');
-      window.open('/merchant', '_blank', 'noopener,noreferrer');
-    } else if (role === 'customer') {
-      setNameInput('John Doe (Buyer)');
-      setEmailInput('buyer-john@sandbox.paypal.com');
-      setRoleInput('customer');
-      login('buyer-john@sandbox.paypal.com', 'John Doe (Buyer)', 'customer');
-      window.open('/portal', '_blank', 'noopener,noreferrer');
-    } else {
-      setNameInput('System Administrator');
-      setEmailInput('admin@disputedesk.ai');
-      setRoleInput('admin');
-      login('admin@disputedesk.ai', 'System Administrator (Executive)', 'admin');
-      window.open('/admin', '_blank', 'noopener,noreferrer');
+  // Advanced custom credentials submission
+  const handleCustomCredentialsConnect = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!ppClientId || !ppClientSecret) return;
+    setIsTestingCustom(true);
+    setPpStatus(null);
+    try {
+      const res = await fetch('/api/paypal/connect', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ clientId: ppClientId, clientSecret: ppClientSecret }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setPpStatus({
+          connected: true,
+          masked: data.maskedClientId,
+          message:
+            language === 'es'
+              ? '¡Credenciales verificadas y conectadas con PayPal Sandbox!'
+              : 'Credentials verified & linked with PayPal Sandbox!',
+        });
+        login(
+          'merchant-custom@sandbox.paypal.com',
+          'Custom Store (PayPal Verified)',
+          'merchant'
+        );
+        setPpClientSecret('');
+      } else {
+        setPpStatus({ connected: false, error: data.error });
+      }
+    } catch (err: any) {
+      setPpStatus({ connected: false, error: err.message || 'Error de conexión' });
+    } finally {
+      setIsTestingCustom(false);
     }
   };
 
   return (
-    <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 transition-colors">
-      <div className="pb-6 border-b border-slate-200/80 dark:border-slate-800">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-amber-50 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800 mb-3 shadow-xs">
-          <IconLock size={12} className="text-amber-600 dark:text-amber-400" />
-          <span>{language === 'es' ? 'Autenticación PayPal Sandbox' : 'PayPal Sandbox Authentication'}</span>
+    <main className="max-w-3xl mx-auto px-4 sm:px-6 py-12 space-y-8 transition-colors">
+      
+      {/* Top Brand Header */}
+      <div className="text-center space-y-3">
+        <div className="relative w-16 h-16 mx-auto rounded-2xl bg-gradient-to-b from-[#0070BA]/10 to-[#003087]/10 dark:from-[#0070BA]/20 dark:to-[#003087]/20 p-2 border border-[#0070BA]/25 shadow-sm flex items-center justify-center">
+          <Image
+            src="/logo.png"
+            alt="Tally-Ho Official Logo"
+            width={52}
+            height={52}
+            className="object-contain drop-shadow-xs"
+            priority
+          />
         </div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-          {t('auth.title')}
+
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#0070BA]/10 text-[#0070BA] dark:bg-[#0070BA]/20 dark:text-[#0070BA] border border-[#0070BA]/25 shadow-2xs">
+          <IconPayPal size={13} className="text-[#0070BA]" />
+          <span>PayPal AI Hackathon 2026 • Sandbox Environment</span>
+        </div>
+
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+          {language === 'es' ? 'Conectar con PayPal' : 'Connect with PayPal'}
         </h1>
-        <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-2">
-          {t('auth.subtitle')}
+        <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 max-w-lg mx-auto leading-relaxed">
+          {language === 'es'
+            ? 'Vincula tu cuenta comercial en 1 solo clic. Sin formularios manuales ni configuraciones complejas.'
+            : 'Link your merchant account in a single click. Zero manual forms or tedious setup.'}
         </p>
       </div>
 
-      {/* One-Click Connect with PayPal Sandbox Bar */}
-      <div className="p-6 rounded-2xl bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white shadow-md space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-blue-300">
-              PayPal Developer Sandbox
-            </span>
-            <h2 className="text-lg sm:text-xl font-extrabold mt-1">
-              {language === 'es' ? 'Conectar Cuenta de PayPal Sandbox' : 'Connect PayPal Sandbox Account'}
-            </h2>
-            <p className="text-xs text-slate-300 mt-1 max-w-xl leading-relaxed">
-              {language === 'es'
-                ? 'Elige un perfil para evaluar la app al instante o ingresa tus credenciales de desarrollador PayPal.'
-                : 'Select an instant sandbox profile for evaluation or connect your custom PayPal developer keys.'}
-            </p>
-          </div>
+      {/* Main Connection Card */}
+      <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 sm:p-8 shadow-md transition-all">
+        {user ? (
+          /* State 1: Connected / Logged in */
+          <div className="space-y-6 text-center">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>
+                {language === 'es' ? 'Cuenta PayPal Conectada y Activa' : 'PayPal Account Connected & Active'}
+              </span>
+            </div>
 
-          <div className="flex flex-col sm:flex-row gap-2.5 shrink-0">
-            <button
-              onClick={() => handleQuickPreset('merchant')}
-              className="px-4 py-2.5 bg-[#0070ba] hover:bg-[#005ea6] text-white text-xs font-semibold rounded-xl shadow-xs transition-all flex items-center justify-center gap-2"
-            >
-              <IconStore size={14} />
-              <span>{language === 'es' ? 'Entrar como Comerciante' : 'Connect as Merchant'}</span>
-            </button>
-            <button
-              onClick={() => handleQuickPreset('customer')}
-              className="px-4 py-2.5 bg-[#003087] hover:bg-[#00256c] text-white text-xs font-semibold rounded-xl shadow-xs transition-all flex items-center justify-center gap-2"
-            >
-              <IconUser size={14} />
-              <span>{language === 'es' ? 'Entrar como Cliente' : 'Connect as Customer (Buyer)'}</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Current Active Session Card */}
-        <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-              {language === 'es' ? 'Sesión Actual' : 'Active Session'}
-            </span>
-            <span
-              className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold border ${
-                user
-                  ? 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-700'
-              }`}
-            >
-              <span
-                className={`w-1.5 h-1.5 rounded-full ${user ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'}`}
-              />
-              {user ? t('auth.status.signedIn') : t('auth.status.signedOut')}
-            </span>
-          </div>
-
-          {user ? (
-            <div className="space-y-3 text-xs">
-              <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800/60">
-                <span className="text-slate-500 dark:text-slate-400">{t('auth.account')}:</span>
-                <span className="font-semibold text-slate-900 dark:text-white">{user.name}</span>
+            <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 max-w-md mx-auto text-left space-y-2.5 text-xs">
+              <div className="flex justify-between items-center py-1 border-b border-slate-200/80 dark:border-slate-700">
+                <span className="text-slate-500 dark:text-slate-400">
+                  {language === 'es' ? 'Comercio:' : 'Merchant:'}
+                </span>
+                <span className="font-bold text-slate-900 dark:text-white">{user.name}</span>
               </div>
-              <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800/60">
+              <div className="flex justify-between items-center py-1 border-b border-slate-200/80 dark:border-slate-700">
                 <span className="text-slate-500 dark:text-slate-400">Email:</span>
                 <span className="font-mono text-slate-700 dark:text-slate-300">{user.email}</span>
               </div>
-              <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800/60 items-center">
-                <span className="text-slate-500 dark:text-slate-400">{t('auth.role')}:</span>
-                <span
-                  className={`font-semibold px-2 py-0.5 rounded-full text-[11px] ${
-                    user.role === 'admin'
-                      ? 'bg-indigo-100 dark:bg-indigo-950/80 text-indigo-800 dark:text-indigo-300'
-                      : user.role === 'merchant'
-                        ? 'bg-blue-100 dark:bg-blue-950/80 text-blue-800 dark:text-blue-300'
-                        : 'bg-purple-100 dark:bg-purple-950/80 text-purple-800 dark:text-purple-300'
-                  }`}
-                >
-                  {user.role === 'admin' ? 'Executive Admin' : user.role === 'merchant' ? 'Store Merchant' : 'Customer (Buyer)'}
+              <div className="flex justify-between items-center py-1">
+                <span className="text-slate-500 dark:text-slate-400">
+                  {language === 'es' ? 'Entorno:' : 'Environment:'}
                 </span>
-              </div>
-              <div className="flex justify-between py-1.5">
-                <span className="text-slate-500 dark:text-slate-400">{t('auth.mode')}:</span>
-                <span className="font-mono text-emerald-600 dark:text-emerald-400 font-semibold">
-                  PayPal Sandbox Live Lock
+                <span className="font-mono text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
+                  <IconPayPal size={12} />
+                  <span>Sandbox Live API</span>
                 </span>
-              </div>
-
-              {/* Direct Route Links based on Role — abren en nueva pestaña */}
-              <div className="pt-4 flex flex-col gap-2">
-                {user.role === 'admin' ? (
-                  <a
-                    href="/admin"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-xl text-center shadow-xs transition-colors flex items-center justify-center gap-1.5"
-                  >
-                    <IconShield size={14} />
-                    <span>{language === 'es' ? 'Abrir Panel de Admin' : 'Open Admin Dashboard'}</span>
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" className="opacity-70"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7zM14 3v2h3.59L7.76 14.83l1.41 1.41L19 5.41V9h2V3h-7z"/></svg>
-                  </a>
-                ) : user.role === 'merchant' ? (
-                  <a
-                    href="/merchant"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-xl text-center shadow-xs transition-colors flex items-center justify-center gap-1.5"
-                  >
-                    <IconStore size={14} />
-                    <span>{language === 'es' ? 'Abrir Portal Comerciante' : 'Open Merchant Hub'}</span>
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" className="opacity-70"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7zM14 3v2h3.59L7.76 14.83l1.41 1.41L19 5.41V9h2V3h-7z"/></svg>
-                  </a>
-                ) : (
-                  <a
-                    href="/portal"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full py-2.5 px-4 bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold rounded-xl text-center shadow-xs transition-colors flex items-center justify-center gap-1.5"
-                  >
-                    <IconUser size={14} />
-                    <span>{language === 'es' ? 'Abrir Portal de Cliente' : 'Open Customer Portal'}</span>
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" className="opacity-70"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7zM14 3v2h3.59L7.76 14.83l1.41 1.41L19 5.41V9h2V3h-7z"/></svg>
-                  </a>
-                )}
-
-                <Link
-                  href="/out"
-                  className="w-full py-2.5 px-4 bg-rose-50 dark:bg-rose-950/50 hover:bg-rose-100 dark:hover:bg-rose-900 text-rose-700 dark:text-rose-300 text-xs font-semibold rounded-xl border border-rose-200 dark:border-rose-800 text-center transition-colors flex items-center justify-center gap-1.5"
-                >
-                  <IconLogOut size={14} />
-                  <span>{t('auth.btn.signout')}</span>
-                </Link>
               </div>
             </div>
-          ) : (
-            <div className="py-6 text-center text-xs text-slate-500 dark:text-slate-400">
-              <p className="mb-4">
-                {language === 'es'
-                  ? 'Actualmente estás en modo invitado. Conecta con PayPal Sandbox para comenzar.'
-                  : 'You are currently in guest mode. Connect with PayPal Sandbox to begin.'}
-              </p>
-              <button
-                onClick={() => login()}
-                className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-xs transition-colors"
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2 max-w-md mx-auto">
+              <Link
+                href="/disputes"
+                className="w-full sm:w-auto flex-1 px-6 py-3 bg-[#0070BA] hover:bg-[#005EA6] active:bg-[#003087] text-white text-xs font-bold rounded-full shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 group"
               >
-                {t('auth.btn.signin')}
+                <span>{language === 'es' ? 'Ir a la Bandeja de Disputas' : 'Open Disputes Inbox'}</span>
+                <IconArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
+              </Link>
+
+              <button
+                onClick={() => logout()}
+                className="w-full sm:w-auto px-5 py-3 bg-slate-100 dark:bg-slate-800 hover:bg-rose-50 dark:hover:bg-rose-950/40 text-slate-700 dark:text-slate-300 hover:text-rose-600 dark:hover:text-rose-400 border border-slate-200 dark:border-slate-700 rounded-full text-xs font-semibold transition-colors flex items-center justify-center gap-1.5"
+              >
+                <IconLogOut size={13} />
+                <span>{language === 'es' ? 'Desconectar' : 'Disconnect'}</span>
               </button>
             </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          /* State 2: Ready to connect (1-Click, Zero Friction) */
+          <div className="space-y-6 text-center py-2">
+            <div className="w-16 h-16 rounded-2xl bg-[#0070BA]/10 text-[#0070BA] dark:bg-[#0070BA]/20 dark:text-blue-300 mx-auto flex items-center justify-center border border-[#0070BA]/25 shadow-2xs">
+              <IconPayPal size={32} />
+            </div>
 
-        {/* Custom Credentials Form */}
-        <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-4">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-            {language === 'es' ? 'Credenciales Personalizadas' : 'Custom Sandbox Credentials'}
-          </h3>
+            <div className="space-y-1.5 max-w-md mx-auto">
+              <h2 className="text-lg font-bold text-slate-900 dark:text-white">
+                {language === 'es'
+                  ? 'Acceso Seguro a PayPal Sandbox'
+                  : 'Secure PayPal Sandbox Access'}
+              </h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                {language === 'es'
+                  ? 'Haz clic en el botón a continuación para autorizar y conectar tu cuenta de comerciante inmediatamente.'
+                  : 'Click the button below to authorize and connect your merchant account instantly.'}
+              </p>
+            </div>
 
-          <form onSubmit={handleCustomConnect} className="space-y-4 text-xs">
-            <div>
-              <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">
-                {language === 'es' ? 'Rol en la Plataforma' : 'Account Role'}
-              </label>
-              <select
-                value={roleInput}
-                onChange={(e) => setRoleInput(e.target.value as UserRole)}
-                className="w-full p-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
+            {/* THE BIG 1-CLICK BUTTON */}
+            <div className="pt-2 max-w-sm mx-auto">
+              <button
+                onClick={handleOneClickConnect}
+                disabled={isConnecting}
+                className="w-full py-3.5 px-6 bg-[#0070BA] hover:bg-[#005EA6] active:bg-[#003087] disabled:opacity-60 text-white font-extrabold text-sm rounded-full shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2.5 group cursor-pointer"
               >
-                <option value="merchant">Merchant (Store Owner / Seller)</option>
-                <option value="customer">Customer (Buyer / Client)</option>
-                <option value="admin">Executive Admin (Restricted)</option>
-              </select>
-            </div>
+                <IconPayPal size={18} />
+                <span>
+                  {isConnecting
+                    ? (language === 'es' ? 'Conectando con PayPal...' : 'Connecting to PayPal...')
+                    : (language === 'es' ? 'Conectar con PayPal Sandbox' : 'Connect with PayPal Sandbox')}
+                </span>
+                {!isConnecting && (
+                  <IconArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
+                )}
+              </button>
 
+              <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-3 flex items-center justify-center gap-1">
+                <IconLock size={12} />
+                <span>
+                  {language === 'es'
+                    ? 'Autenticación directa en Sandbox. Sin contraseñas requeridas.'
+                    : 'Direct Sandbox auth. No password required.'}
+                </span>
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Collapsible Advanced Section for Evaluators / Alternate Roles */}
+      <div className="border border-slate-200/80 dark:border-slate-800 rounded-2xl bg-slate-50/50 dark:bg-slate-900/50 p-4 transition-colors">
+        <button
+          onClick={() => setShowAdvanced(!showAdvanced)}
+          className="w-full flex items-center justify-between text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors py-1 cursor-pointer"
+        >
+          <span className="flex items-center gap-2">
+            <span>⚙️</span>
+            <span>
+              {language === 'es'
+                ? 'Opciones avanzadas y roles de prueba (Opcional)'
+                : 'Advanced Options & Test Personas (Optional)'}
+            </span>
+          </span>
+          <span className="text-[11px]">{showAdvanced ? '▲ Ocultar' : '▼ Ver'}</span>
+        </button>
+
+        {showAdvanced && (
+          <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-800 space-y-6">
+            
+            {/* Quick Test Role Switcher */}
             <div>
-              <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">
-                {language === 'es' ? 'Nombre o Razón Social' : 'Name or Store Name'}
-              </label>
-              <input
-                type="text"
-                value={nameInput}
-                onChange={(e) => setNameInput(e.target.value)}
-                className="w-full p-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
-                placeholder="My Store LLC"
-              />
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-2">
+                {language === 'es' ? '1. Probar Otros Perfiles' : '1. Try Other Personas'}
+              </span>
+              <div className="flex flex-wrap gap-2 text-xs">
+                <button
+                  onClick={() => {
+                    login('buyer-john@sandbox.paypal.com', 'John Doe (Buyer)', 'customer');
+                    window.open('/portal', '_blank');
+                  }}
+                  className="px-3.5 py-2 rounded-xl bg-purple-50 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800 hover:bg-purple-100 font-semibold flex items-center gap-1.5"
+                >
+                  <IconUser size={13} />
+                  <span>{language === 'es' ? 'Portal del Cliente (Comprador)' : 'Customer Portal (Buyer)'}</span>
+                </button>
+
+                <button
+                  onClick={() => {
+                    login('admin@disputedesk.ai', 'System Administrator (Executive)', 'admin');
+                    window.open('/admin', '_blank');
+                  }}
+                  className="px-3.5 py-2 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 hover:bg-indigo-100 font-semibold flex items-center gap-1.5"
+                >
+                  <IconShield size={13} />
+                  <span>{language === 'es' ? 'Panel de Administrador' : 'Admin Panel'}</span>
+                </button>
+              </div>
             </div>
 
+            {/* Custom PayPal Keys Override Form */}
             <div>
-              <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">
-                {language === 'es' ? 'Email Sandbox de PayPal' : 'PayPal Sandbox Email'}
-              </label>
-              <input
-                type="email"
-                value={emailInput}
-                onChange={(e) => setEmailInput(e.target.value)}
-                className="w-full p-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
-                placeholder="merchant@sandbox.paypal.com"
-              />
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-2">
+                {language === 'es'
+                  ? '2. Vincular Claves Personalizadas de PayPal Developer'
+                  : '2. Link Custom PayPal Developer Keys'}
+              </span>
+              <form onSubmit={handleCustomCredentialsConnect} className="space-y-3 text-xs">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-slate-600 dark:text-slate-400 font-medium mb-1">
+                      Sandbox Client ID
+                    </label>
+                    <input
+                      type="text"
+                      value={ppClientId}
+                      onChange={(e) => setPpClientId(e.target.value)}
+                      placeholder="BAAmRUlXk..."
+                      className="w-full p-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-mono text-xs focus:ring-2 focus:ring-[#0070BA] outline-hidden"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-slate-600 dark:text-slate-400 font-medium mb-1">
+                      Sandbox Client Secret
+                    </label>
+                    <input
+                      type="password"
+                      value={ppClientSecret}
+                      onChange={(e) => setPpClientSecret(e.target.value)}
+                      placeholder="EAL-1r9qo..."
+                      className="w-full p-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-mono text-xs focus:ring-2 focus:ring-[#0070BA] outline-hidden"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-2 pt-1">
+                  <div className="text-[11px]">
+                    {ppStatus?.message && (
+                      <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
+                        {ppStatus.message}
+                      </span>
+                    )}
+                    {ppStatus?.error && (
+                      <span className="text-rose-600 dark:text-rose-400 font-semibold">
+                        {ppStatus.error}
+                      </span>
+                    )}
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isTestingCustom || !ppClientId || !ppClientSecret}
+                    className="px-4 py-2 bg-[#003087] hover:bg-[#00256C] disabled:opacity-50 text-white rounded-full font-bold text-xs shadow-xs transition-colors"
+                  >
+                    {isTestingCustom
+                      ? (language === 'es' ? 'Validando...' : 'Validating...')
+                      : (language === 'es' ? 'Guardar Claves' : 'Save Keys')}
+                  </button>
+                </div>
+              </form>
             </div>
-
-            <button
-              type="submit"
-              className="w-full py-2.5 px-4 bg-slate-900 dark:bg-blue-600 hover:bg-slate-800 dark:hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors shadow-xs"
-            >
-              {language === 'es' ? 'Guardar y Conectar Sesión' : 'Save & Connect Session'}
-            </button>
-          </form>
-
-          <p className="text-[11px] text-slate-400 leading-relaxed pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center gap-1.5">
-            <IconLock size={12} className="shrink-0" />
-            <span>{t('auth.notice')}</span>
-          </p>
-        </div>
+          </div>
+        )}
       </div>
     </main>
   );

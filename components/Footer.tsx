@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useApp } from '@/context/AppContext';
 import {
   IconShield,
@@ -13,6 +14,7 @@ import {
   IconFile,
   IconKey,
   IconTrendingUp,
+  IconPayPal,
 } from '@/components/Icons';
 
 export function Footer() {
@@ -24,16 +26,23 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand & Mission */}
           <div className="md:col-span-2 space-y-4">
-            <Link href="/" className="inline-flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center text-white font-extrabold text-sm shadow-xs">
-                TH
+            <Link href="/" className="inline-flex items-center gap-3">
+              <div className="w-11 h-11 flex items-center justify-center shrink-0">
+                <Image
+                  src="/logo.png"
+                  alt="Tally-Ho Logo"
+                  width={44}
+                  height={44}
+                  className="object-contain"
+                />
               </div>
               <div className="flex items-center gap-2">
                 <span className="font-extrabold text-slate-900 dark:text-white text-base tracking-tight">
                   Tally-Ho
                 </span>
-                <span className="text-[10px] font-bold uppercase tracking-wider bg-blue-50 dark:bg-blue-950/70 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full border border-blue-200 dark:border-blue-800 whitespace-nowrap">
-                  Dispute Engine
+                <span className="text-[10px] font-bold uppercase tracking-wider bg-[#0070BA]/10 text-[#0070BA] dark:bg-[#0070BA]/20 dark:text-[#0070BA] px-2.5 py-0.5 rounded-full border border-[#0070BA]/20 whitespace-nowrap inline-flex items-center gap-1">
+                  <IconPayPal size={11} className="text-[#0070BA]" />
+                  <span>Dispute Engine</span>
                 </span>
               </div>
             </Link>
@@ -67,7 +76,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/merchant"
+                  href="/auth"
                   className="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-2"
                 >
                   <IconStore size={13} />
@@ -76,7 +85,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/portal"
+                  href="/auth"
                   className="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-2"
                 >
                   <IconUser size={13} />
@@ -85,7 +94,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/admin"
+                  href="/auth"
                   className="text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-2"
                 >
                   <IconLock size={13} />
@@ -139,13 +148,13 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="https://github.com/3m3r4l"
+                  href="https://github.com/jammar24/Tally-Ho"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-2"
                 >
                   <span className="font-mono text-xs">@</span>
-                  <span>GitHub @3m3r4l</span>
+                  <span>GitHub Repository</span>
                 </a>
               </li>
               <li>
@@ -164,14 +173,14 @@ export function Footer() {
         {/* Bottom Strip */}
         <div className="mt-10 pt-6 border-t border-slate-200/80 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
           <p>
-            © 2026 <strong className="text-slate-800 dark:text-slate-200">Tally-Ho Dispute Engine</strong>. Built by{' '}
+            © 2026 <strong className="text-slate-800 dark:text-slate-200">Tally-Ho Dispute Engine</strong>. Built for PayPal AI Hackathon by{' '}
             <a
-              href="https://github.com/3m3r4l"
+              href="https://github.com/jammar24/Tally-Ho"
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-600 dark:text-blue-400 hover:underline font-semibold"
             >
-              Jamar Masias (@3m3r4l)
+              Jamar Masias (jammar24/Tally-Ho)
             </a>
             . MIT License.
           </p>

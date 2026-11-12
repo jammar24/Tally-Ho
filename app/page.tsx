@@ -4,6 +4,7 @@ export const dynamic = 'force-dynamic';
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useApp } from '@/context/AppContext';
 import {
   IconBolt,
@@ -17,6 +18,7 @@ import {
   IconEye,
   IconArrowRight,
   IconCheckCircle,
+  IconPayPal,
 } from '@/components/Icons';
 
 export default function HomePage() {
@@ -52,49 +54,64 @@ export default function HomePage() {
   return (
     <div className="flex-1 flex flex-col">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-white dark:bg-slate-900/70 border-b border-slate-200/80 dark:border-slate-800/80 py-16 sm:py-24 transition-colors">
+      <section className="relative overflow-hidden bg-white dark:bg-slate-900/70 border-b border-slate-200/80 dark:border-slate-800/80 py-14 sm:py-20 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800 mb-6 shadow-xs">
-            <IconAward size={14} className="text-blue-600 dark:text-blue-400" />
-            <span>{t('home.badge')}</span>
+          
+          {/* Logo & Hackathon Badge */}
+          <div className="flex flex-col items-center justify-center mb-6 space-y-4">
+            <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-b from-[#0070BA]/10 to-[#003087]/10 dark:from-[#0070BA]/20 dark:to-[#003087]/20 p-2 border border-[#0070BA]/30 shadow-md flex items-center justify-center">
+              <Image
+                src="/logo.png"
+                alt="Tally-Ho Official Logo"
+                width={88}
+                height={88}
+                className="object-contain drop-shadow-sm"
+                priority
+              />
+            </div>
+
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold bg-[#0070BA]/10 text-[#0070BA] dark:bg-[#0070BA]/20 dark:text-[#0070BA] border border-[#0070BA]/25 shadow-xs">
+              <IconPayPal size={13} className="text-[#0070BA]" />
+              <span>{t('home.badge')}</span>
+            </div>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white tracking-tight max-w-4xl mx-auto leading-tight">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white tracking-tight max-w-4xl mx-auto leading-tight">
             {t('home.hero.title')}
           </h1>
 
-          <p className="mt-6 text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
+          <p className="mt-5 text-sm sm:text-base lg:text-lg text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
             {t('home.hero.subtitle')}
           </p>
 
-          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3.5">
+          <div className="mt-9 flex flex-col sm:flex-row items-center justify-center gap-3 max-w-2xl mx-auto">
             <Link
               href="/disputes"
-              className="w-full sm:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-xs hover:shadow-md transition-all text-xs flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-6 py-3 bg-[#0070BA] hover:bg-[#005EA6] text-white font-semibold rounded-full shadow-sm hover:shadow-md transition-all text-xs flex items-center justify-center gap-2"
             >
               <IconBolt size={15} />
               <span>{t('home.hero.cta.inbox')}</span>
             </Link>
             <Link
               href="/auth"
-              className="w-full sm:w-auto px-6 py-3 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold rounded-xl border border-slate-200 dark:border-slate-700 transition-colors text-xs flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-6 py-3 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-[#003087] dark:text-slate-100 font-semibold rounded-full border border-slate-300 dark:border-slate-700 transition-colors text-xs flex items-center justify-center gap-2 shadow-2xs"
             >
-              <IconStore size={15} className="text-blue-600 dark:text-blue-400" />
+              <IconStore size={15} className="text-[#0070BA]" />
               <span>{t('nav.merchant')}</span>
             </Link>
             <Link
               href="/auth"
-              className="w-full sm:w-auto px-6 py-3 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold rounded-xl border border-slate-200 dark:border-slate-700 transition-colors text-xs flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-6 py-3 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold rounded-full border border-slate-300 dark:border-slate-700 transition-colors text-xs flex items-center justify-center gap-2 shadow-2xs"
             >
-              <IconUser size={15} className="text-purple-600 dark:text-purple-400" />
+              <IconUser size={15} className="text-[#0070BA]" />
               <span>{t('nav.portal')}</span>
             </Link>
             <Link
               href="/auth"
-              className="w-full sm:w-auto px-6 py-3 bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold rounded-xl border border-slate-200 dark:border-slate-700 transition-colors text-xs flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-6 py-3 bg-[#003087] hover:bg-[#00256C] text-white font-semibold rounded-full shadow-sm transition-colors text-xs flex items-center justify-center gap-2"
             >
-              <IconShield size={15} />
-              <span>PayPal Connect</span>
+              <IconPayPal size={14} />
+              <span>PayPal Sandbox</span>
             </Link>
           </div>
 

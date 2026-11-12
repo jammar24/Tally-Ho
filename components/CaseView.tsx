@@ -46,11 +46,11 @@ export function CaseView({ dispute, initialPackage }: CaseViewProps) {
 
   const strengthBadge = pkg?.assessment?.strength
     ? {
-        strong: 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800',
-        moderate: 'bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border-amber-300 dark:border-amber-800',
-        weak: 'bg-orange-50 dark:bg-orange-950/60 text-orange-700 dark:text-orange-300 border-orange-300 dark:border-orange-800',
-        insufficient: 'bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 border-rose-300 dark:border-rose-800',
-      }[pkg.assessment.strength]
+      strong: 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800',
+      moderate: 'bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border-amber-300 dark:border-amber-800',
+      weak: 'bg-orange-50 dark:bg-orange-950/60 text-orange-700 dark:text-orange-300 border-orange-300 dark:border-orange-800',
+      insufficient: 'bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 border-rose-300 dark:border-rose-800',
+    }[pkg.assessment.strength]
     : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700';
 
   return (
@@ -79,22 +79,22 @@ export function CaseView({ dispute, initialPackage }: CaseViewProps) {
           <button
             onClick={handleAnalyze}
             disabled={isAnalyzing}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white text-xs font-semibold rounded-xl shadow-xs transition-colors flex items-center gap-2"
+            className="px-4 py-2 bg-[#0070BA] hover:bg-[#005EA6] disabled:opacity-50 text-white text-xs font-semibold rounded-full shadow-sm hover:shadow-md transition-all flex items-center gap-2"
           >
             <IconBolt size={14} />
             <span>
               {isAnalyzing
                 ? 'Thinking & Reading Documents...'
                 : pkg
-                ? 'Re-Analyze with AI'
-                : 'Analyze with AI'}
+                  ? 'Re-Analyze with AI'
+                  : 'Analyze with AI'}
             </span>
           </button>
 
           {pkg && !submitResult && (
             <button
               onClick={() => setShowApprove(true)}
-              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl shadow-xs transition-colors flex items-center gap-1.5"
+              className="px-4 py-2 bg-[#007B40] hover:bg-[#006032] text-white text-xs font-semibold rounded-full shadow-sm hover:shadow-md transition-all flex items-center gap-1.5"
             >
               <IconCheck size={14} />
               <span>Approve & Submit</span>

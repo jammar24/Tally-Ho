@@ -9,7 +9,7 @@ const EnvSchema = z.object({
   LLM_PROVIDER: z.enum(['gemini', 'openai-compatible']).default('gemini'),
   LLM_API_KEY: z.string().optional().default(''),
   LLM_BASE_URL: z.string().optional().default(''),
-  LLM_MODEL_PRIMARY: z.string().optional().default('gemini-2.5-flash'),
+  LLM_MODEL_PRIMARY: z.string().optional().default('gemini-3.1-flash-lite'),
   LLM_MODEL_FAST: z.string().optional().default(''),
   LLM_VISION: z.string().default('auto'),
   MAX_AGENT_STEPS: z.coerce.number().default(6),

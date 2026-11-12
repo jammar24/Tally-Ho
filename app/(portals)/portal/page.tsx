@@ -6,6 +6,8 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useApp } from '@/context/AppContext';
 import Link from 'next/link';
+import Image from 'next/image';
+import { PortalNavBar } from '@/components/PortalNavBar';
 import {
   IconUser,
   IconShield,
@@ -14,6 +16,7 @@ import {
   IconPackage,
   IconEye,
   IconCheck,
+  IconPayPal,
 } from '@/components/Icons';
 
 interface CustomerDispute {
@@ -126,25 +129,41 @@ export default function CustomerPortalPage() {
   const activeDispute = customerDisputes.find((d) => d.id === selectedCaseId) || customerDisputes[0];
 
   return (
+    <>
+      <PortalNavBar
+        label={language === 'es' ? 'Portal Cliente' : 'Customer Portal'}
+        badgeClass="bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-800"
+      />
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 transition-colors">
       {/* Top Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between pb-6 border-b border-slate-200/80 dark:border-slate-800/80 gap-4">
-        <div>
-          <div className="flex items-center gap-2 mb-2">
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-purple-50 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800 flex items-center gap-1.5">
-              <IconUser size={12} />
-              <span>{language === 'es' ? 'Portal del Cliente' : 'Customer Portal'}</span>
-            </span>
-            <span className="text-xs font-mono text-slate-500 dark:text-slate-400">
-              {user?.email || 'customer-buyer@example.com'}
-            </span>
+        <div className="flex items-start gap-3.5">
+          <div className="w-12 h-12 rounded-xl bg-slate-900/5 dark:bg-slate-800 p-1.5 flex items-center justify-center border border-slate-200/80 dark:border-slate-700/80 shadow-xs shrink-0">
+            <Image
+              src="/logo.png"
+              alt="Tally-Ho Logo"
+              width={40}
+              height={40}
+              className="object-contain"
+            />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-            {t('portal.title')}
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
-            {t('portal.subtitle')}
-          </p>
+          <div>
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#0070BA]/10 text-[#0070BA] dark:bg-[#0070BA]/20 dark:text-[#0070BA] border border-[#0070BA]/25 flex items-center gap-1.5">
+                <IconPayPal size={12} />
+                <span>{language === 'es' ? 'Portal del Cliente' : 'Customer Portal'}</span>
+              </span>
+              <span className="text-xs font-mono text-slate-500 dark:text-slate-400">
+                {user?.email || 'customer-buyer@example.com'}
+              </span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+              {t('portal.title')}
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+              {t('portal.subtitle')}
+            </p>
+          </div>
         </div>
 
         {/* Switch Role Pill for Demo & Testing */}
@@ -343,5 +362,6 @@ export default function CustomerPortalPage() {
         </div>
       </div>
     </main>
+    </>
   );
 }

@@ -4,8 +4,10 @@ export const dynamic = 'force-dynamic';
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useApp } from '@/context/AppContext';
+import { PortalNavBar } from '@/components/PortalNavBar';
 import {
   IconStore,
   IconBolt,
@@ -19,6 +21,7 @@ import {
   IconUpload,
   IconPlug,
   IconEye,
+  IconPayPal,
 } from '@/components/Icons';
 
 interface EvidenceDoc {
@@ -138,31 +141,47 @@ export default function MerchantPortalPage() {
   };
 
   return (
+    <>
+      <PortalNavBar
+        label={language === 'es' ? 'Portal Comerciante' : 'Merchant Hub'}
+        badgeClass="bg-[#0070BA]/10 text-[#0070BA] dark:bg-[#0070BA]/20 dark:text-[#0070BA] border-[#0070BA]/20"
+      />
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 transition-colors">
       {/* Header Bar */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between pb-6 border-b border-slate-200/80 dark:border-slate-800/80 gap-4">
-        <div>
-          <div className="flex items-center gap-2 mb-2">
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-blue-50 dark:bg-blue-950/80 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800 flex items-center gap-1.5">
-              <IconStore size={12} />
-              <span>{language === 'es' ? 'Portal de Comerciante' : 'Merchant Hub'}</span>
-            </span>
-            <span className="text-xs font-mono text-slate-500 dark:text-slate-400">
-              Merchant ID: MERCH-US-8921X • PayPal Sandbox
-            </span>
+        <div className="flex items-start gap-3.5">
+          <div className="w-12 h-12 rounded-xl bg-slate-900/5 dark:bg-slate-800 p-1.5 flex items-center justify-center border border-slate-200/80 dark:border-slate-700/80 shadow-xs shrink-0">
+            <Image
+              src="/logo.png"
+              alt="Tally-Ho Logo"
+              width={40}
+              height={40}
+              className="object-contain"
+            />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-            {t('merchant.title')}
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
-            {t('merchant.subtitle')}
-          </p>
+          <div>
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#0070BA]/10 text-[#0070BA] dark:bg-[#0070BA]/20 dark:text-[#0070BA] border border-[#0070BA]/25 flex items-center gap-1.5">
+                <IconPayPal size={12} />
+                <span>{language === 'es' ? 'Portal de Comerciante' : 'Merchant Hub'}</span>
+              </span>
+              <span className="text-xs font-mono text-slate-500 dark:text-slate-400">
+                Merchant ID: MERCH-US-8921X • PayPal Sandbox
+              </span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+              {t('merchant.title')}
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+              {t('merchant.subtitle')}
+            </p>
+          </div>
         </div>
 
         <div className="flex items-center gap-2.5">
           <Link
             href="/disputes"
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold shadow-xs flex items-center gap-1.5 transition-colors"
+            className="px-4 py-2 bg-[#0070BA] hover:bg-[#005EA6] text-white rounded-full text-xs font-semibold shadow-xs flex items-center gap-1.5 transition-colors"
           >
             <IconBolt size={14} />
             <span>{language === 'es' ? 'Ver Disputas Activas' : 'Open Dispute Inbox'}</span>
@@ -457,5 +476,6 @@ export default function MerchantPortalPage() {
         </div>
       )}
     </main>
+    </>
   );
 }

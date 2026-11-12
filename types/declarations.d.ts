@@ -74,3 +74,35 @@ declare module 'next/dist/lib/metadata/types/metadata-interface.js' {
   export type ResolvingMetadata = any;
   export type ResolvingViewport = any;
 }
+
+declare module 'next/image' {
+  import React from 'react';
+  export interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+    src: string | any;
+    alt: string;
+    width?: number | `${number}`;
+    height?: number | `${number}`;
+    fill?: boolean;
+    loader?: any;
+    quality?: number | `${number}`;
+    priority?: boolean;
+    loading?: 'eager' | 'lazy';
+    placeholder?: 'blur' | 'empty';
+    blurDataURL?: string;
+    unoptimized?: boolean;
+    onLoadingComplete?: any;
+    layout?: string;
+    objectFit?: string;
+    objectPosition?: string;
+    lazyBoundary?: string;
+    lazyRoot?: string;
+  }
+  const Image: React.FC<ImageProps>;
+  export default Image;
+}
+
+declare module 'next/image.js' {
+  export * from 'next/image';
+  import Image from 'next/image';
+  export default Image;
+}

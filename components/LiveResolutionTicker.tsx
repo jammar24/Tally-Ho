@@ -89,9 +89,9 @@ export function LiveResolutionTicker() {
         <div className="flex items-center gap-1.5 text-xs">
           <button
             onClick={() => setFilter('all')}
-            className={`px-2.5 py-1 rounded-lg font-semibold transition-colors ${
+            className={`px-3 py-1 rounded-full font-semibold transition-all ${
               filter === 'all'
-                ? 'bg-slate-900 dark:bg-slate-700 text-white'
+                ? 'bg-[#0070BA] text-white shadow-xs'
                 : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
             }`}
           >
@@ -99,9 +99,9 @@ export function LiveResolutionTicker() {
           </button>
           <button
             onClick={() => setFilter('contradiction')}
-            className={`px-2.5 py-1 rounded-lg font-semibold transition-colors ${
+            className={`px-3 py-1 rounded-full font-semibold transition-all ${
               filter === 'contradiction'
-                ? 'bg-rose-600 text-white'
+                ? 'bg-rose-600 text-white shadow-xs'
                 : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
             }`}
           >
@@ -109,9 +109,9 @@ export function LiveResolutionTicker() {
           </button>
           <button
             onClick={() => setFilter('approval')}
-            className={`px-2.5 py-1 rounded-lg font-semibold transition-colors ${
+            className={`px-3 py-1 rounded-full font-semibold transition-all ${
               filter === 'approval'
-                ? 'bg-emerald-600 text-white'
+                ? 'bg-emerald-600 text-white shadow-xs'
                 : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
             }`}
           >
@@ -145,7 +145,7 @@ export function LiveResolutionTicker() {
               </span>
               <Link
                 href={`/disputes/${ev.disputeId}`}
-                className="px-2.5 py-1 rounded-lg bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 hover:border-blue-500 font-semibold text-[11px] transition-colors flex items-center gap-1"
+                className="px-3 py-1 rounded-full bg-[#0070BA]/10 text-[#0070BA] dark:bg-[#0070BA]/20 dark:text-blue-300 border border-[#0070BA]/30 hover:bg-[#0070BA] hover:text-white font-bold text-[11px] transition-all flex items-center gap-1 shadow-2xs"
               >
                 <IconEye size={12} />
                 <span>{language === 'es' ? 'Ver Caso' : 'Inspect'}</span>

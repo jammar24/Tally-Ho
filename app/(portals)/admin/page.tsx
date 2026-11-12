@@ -5,6 +5,8 @@ export const dynamic = 'force-dynamic';
 import React, { useState } from 'react';
 import { useApp } from '@/context/AppContext';
 import Link from 'next/link';
+import Image from 'next/image';
+import { PortalNavBar } from '@/components/PortalNavBar';
 import {
   IconShield,
   IconLock,
@@ -17,6 +19,7 @@ import {
   IconStore,
   IconCheck,
   IconArrowRight,
+  IconPayPal,
 } from '@/components/Icons';
 
 export default function AdminDashboardPage() {
@@ -74,14 +77,26 @@ export default function AdminDashboardPage() {
   // If user is not logged in as Admin, show the protected Admin Gate
   if (user?.role !== 'admin') {
     return (
+      <>
+        <PortalNavBar
+          label={language === 'es' ? 'Panel Admin' : 'Admin Dashboard'}
+          badgeClass="bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800"
+        />
       <main className="max-w-md mx-auto px-4 py-16 transition-colors">
         <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-8 shadow-lg space-y-6">
           <div className="text-center space-y-2.5">
-            <div className="w-12 h-12 mx-auto rounded-2xl bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400 flex items-center justify-center border border-indigo-100 dark:border-indigo-900 shadow-xs">
-              <IconShield size={24} />
+            <div className="w-16 h-16 mx-auto rounded-2xl bg-slate-900/5 dark:bg-slate-800 p-2 flex items-center justify-center border border-slate-200/80 dark:border-slate-700/80 shadow-xs">
+              <Image
+                src="/logo.png"
+                alt="Tally-Ho Logo"
+                width={52}
+                height={52}
+                className="object-contain"
+              />
             </div>
-            <span className="inline-block px-3 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800">
-              {t('admin.login.badge')}
+            <span className="inline-flex items-center gap-1 px-3 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#0070BA]/10 text-[#0070BA] dark:bg-[#0070BA]/20 dark:text-[#0070BA] border border-[#0070BA]/25">
+              <IconPayPal size={11} />
+              <span>{t('admin.login.badge')}</span>
             </span>
             <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
               {t('admin.login.title')}
@@ -165,11 +180,17 @@ export default function AdminDashboardPage() {
           </div>
         </div>
       </main>
+      </>
     );
   }
 
   // Authorized Admin View
   return (
+    <>
+      <PortalNavBar
+        label={language === 'es' ? 'Panel Admin' : 'Admin Dashboard'}
+        badgeClass="bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800"
+      />
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 transition-colors">
       {/* Top Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between pb-6 border-b border-slate-200/80 dark:border-slate-800/80 gap-4">
@@ -411,5 +432,6 @@ export default function AdminDashboardPage() {
         </div>
       </section>
     </main>
+    </>
   );
 }

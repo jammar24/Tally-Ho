@@ -9,6 +9,17 @@ const nextConfig = {
   },
   experimental: {
     serverComponentsExternalPackages: ['pdf-parse'],
+    optimizePackageImports: ['ag-grid-react', 'ag-grid-community'],
+  },
+  // Prevent webpack from trying to bundle ag-grid's _document chunk
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+      };
+    }
+    return config;
   },
 };
 

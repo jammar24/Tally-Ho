@@ -244,3 +244,11 @@ export function IconHistory({ size = 18, className = '', ...props }: IconProps) 
     </svg>
   );
 }
+
+export function IconPayPal({ size = 18, className = '', ...props }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className} {...props}>
+      <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944 3.72a.785.785 0 0 1 .775-.662h6.72c3.41 0 5.69 1.636 5.308 5.097-.336 3.037-2.348 4.757-5.048 4.757H9.722a.785.785 0 0 0-.775.663l-1.026 6.512a.641.641 0 0 1-.633.55h-.212z" />
+    </svg>
+  );
+}

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { runAgentAnalysis } from '@/lib/ai';
+import { getDisputeById } from '@/lib/paypal';
 import demoDisputes from '@/data/demo-disputes.json';
 import { Dispute } from '@/lib/schemas';
 
@@ -11,27 +12,30 @@ export async function POST(
 ) {
   try {
     const disputeId = params.id;
-    const found = (demoDisputes as any[]).find((d) => d.id === disputeId);
+    let dispute = await getDisputeById(disputeId);
 
-    const dispute: Dispute = found || {
-      id: disputeId,
-      reason: 'MERCHANDISE_OR_SERVICE_NOT_RECEIVED',
-      status: 'WAITING_FOR_SELLER_RESPONSE',
-      amount: { value: '149.99', currency: 'USD' },
-      createdAt: new Date().toISOString(),
-      messages: [
-        {
-          postedBy: 'BUYER',
-          time: new Date().toISOString(),
-          content: 'I did not receive this item.',
-        },
-      ],
-      disputedTransactions: [],
-      requestedEvidence: ['PROOF_OF_DELIVERY'],
-      source: 'demo',
-    };
+    if (!dispute) {
+      const found = (demoDisputes as any[]).find((d) => d.id === disputeId);
+      dispute = found || {
+        id: disputeId,
+        reason: 'MERCHANDISE_OR_SERVICE_NOT_RECEIVED',
+        status: 'WAITING_FOR_SELLER_RESPONSE',
+        amount: { value: '149.99', currency: 'USD' },
+        createdAt: new Date().toISOString(),
+        messages: [
+          {
+            postedBy: 'BUYER',
+            time: new Date().toISOString(),
+            content: 'I did not receive this item.',
+          },
+        ],
+        disputedTransactions: [],
+        requestedEvidence: ['PROOF_OF_DELIVERY'],
+        source: 'demo',
+      };
+    }
 
-    const pkg = await runAgentAnalysis(dispute);
+    const pkg = await runAgentAnalysis(dispute!);
 
     return NextResponse.json({
       success: true,
