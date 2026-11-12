@@ -7,6 +7,7 @@ import { ClaimTable } from './ClaimTable';
 import { TracePanel } from './TracePanel';
 import { ApproveDialog } from './ApproveDialog';
 import Link from 'next/link';
+import { useApp } from '@/context/AppContext';
 import {
   IconBolt,
   IconCheck,
@@ -22,6 +23,7 @@ interface CaseViewProps {
 }
 
 export function CaseView({ dispute, initialPackage }: CaseViewProps) {
+  const { t, language } = useApp();
   const [pkg, setPkg] = useState<EvidencePackage | null>(initialPackage || null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [showApprove, setShowApprove] = useState(false);
@@ -53,6 +55,29 @@ export function CaseView({ dispute, initialPackage }: CaseViewProps) {
     }[pkg.assessment.strength]
     : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700';
 
+  const reasonLabels: Record<string, { es: string; en: string }> = {
+    MERCHANDISE_OR_SERVICE_NOT_RECEIVED: {
+      es: 'Artículo No Recibido (INR)',
+      en: 'Item Not Received (INR)',
+    },
+    MERCHANDISE_OR_SERVICE_NOT_AS_DESCRIBED: {
+      es: 'No Coincide con Descripción (SNAD)',
+      en: 'Not As Described (SNAD)',
+    },
+    DUPLICATE_TRANSACTION: {
+      es: 'Transacción Duplicada',
+      en: 'Duplicate Transaction',
+    },
+    CREDIT_NOT_PROCESSED: {
+      es: 'Reembolso No Procesado',
+      en: 'Credit Not Processed',
+    },
+  };
+
+  const disputeReasonLabel = reasonLabels[dispute.reason]
+    ? (language === 'es' ? reasonLabels[dispute.reason].es : reasonLabels[dispute.reason].en)
+    : dispute.reason.replace(/_/g, ' ');
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       {/* Top Breadcrumb & Actions */}
@@ -60,7 +85,7 @@ export function CaseView({ dispute, initialPackage }: CaseViewProps) {
         <div>
           <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mb-1">
             <Link href="/disputes" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-              ← Disputes Inbox
+              {t('case.back')}
             </Link>
             <span>/</span>
             <span className="font-mono text-slate-700 dark:text-slate-300">{dispute.id}</span>
@@ -70,7 +95,7 @@ export function CaseView({ dispute, initialPackage }: CaseViewProps) {
               {dispute.id}
             </h1>
             <span className="text-xs px-2.5 py-0.5 rounded-full font-semibold border bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700">
-              {dispute.reason.replace(/_/g, ' ')}
+              {disputeReasonLabel}
             </span>
           </div>
         </div>
@@ -79,25 +104,25 @@ export function CaseView({ dispute, initialPackage }: CaseViewProps) {
           <button
             onClick={handleAnalyze}
             disabled={isAnalyzing}
-            className="px-4 py-2 bg-[#0070BA] hover:bg-[#005EA6] disabled:opacity-50 text-white text-xs font-semibold rounded-full shadow-sm hover:shadow-md transition-all flex items-center gap-2"
+            className="px-4 py-2 bg-[#0070BA] hover:bg-[#005EA6] disabled:opacity-50 text-white text-xs font-semibold rounded-full shadow-sm hover:shadow-md transition-all flex items-center gap-2 cursor-pointer"
           >
             <IconBolt size={14} />
             <span>
               {isAnalyzing
-                ? 'Thinking & Reading Documents...'
+                ? t('case.thinking')
                 : pkg
-                  ? 'Re-Analyze with AI'
-                  : 'Analyze with AI'}
+                  ? t('case.reanalyze')
+                  : t('case.analyze')}
             </span>
           </button>
 
           {pkg && !submitResult && (
             <button
               onClick={() => setShowApprove(true)}
-              className="px-4 py-2 bg-[#007B40] hover:bg-[#006032] text-white text-xs font-semibold rounded-full shadow-sm hover:shadow-md transition-all flex items-center gap-1.5"
+              className="px-4 py-2 bg-[#007B40] hover:bg-[#006032] text-white text-xs font-semibold rounded-full shadow-sm hover:shadow-md transition-all flex items-center gap-1.5 cursor-pointer"
             >
               <IconCheck size={14} />
-              <span>Approve & Submit</span>
+              <span>{t('case.approve')}</span>
             </button>
           )}
         </div>
@@ -109,14 +134,21 @@ export function CaseView({ dispute, initialPackage }: CaseViewProps) {
           <div className="flex items-center justify-between mb-1">
             <strong className="text-sm flex items-center gap-1.5">
               <IconCheck size={16} className="text-emerald-600 dark:text-emerald-400" />
-              <span>Evidence Submitted to PayPal ({submitResult.mode.toUpperCase()})</span>
+              <span>
+                {language === 'es'
+                  ? `Evidencia Enviada a PayPal (${submitResult.mode.toUpperCase()})`
+                  : `Evidence Submitted to PayPal (${submitResult.mode.toUpperCase()})`}
+              </span>
             </strong>
             <span className="font-mono text-[10px] text-emerald-700 dark:text-emerald-400">
               {new Date().toLocaleTimeString()}
             </span>
           </div>
           <p className="mt-1">
-            {submitResult.details?.message || 'Evidence package successfully registered.'}
+            {submitResult.details?.message ||
+              (language === 'es'
+                ? 'Paquete de evidencias registrado exitosamente en el Sandbox de PayPal.'
+                : 'Evidence package successfully registered on PayPal Sandbox.')}
           </p>
         </div>
       )}
@@ -127,37 +159,43 @@ export function CaseView({ dispute, initialPackage }: CaseViewProps) {
         <div className="lg:col-span-4 space-y-6">
           <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs">
             <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3">
-              Case Summary
+              {t('case.summary')}
             </h3>
             <div className="space-y-3 text-xs">
               <div className="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800">
-                <span className="text-slate-500 dark:text-slate-400">Gross Disputed:</span>
+                <span className="text-slate-500 dark:text-slate-400">{t('case.gross')}</span>
                 <span className="font-mono font-bold text-slate-900 dark:text-white">
                   ${dispute.amount.value} {dispute.amount.currency}
                 </span>
               </div>
               <div className="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800">
-                <span className="text-slate-500 dark:text-slate-400">Status:</span>
+                <span className="text-slate-500 dark:text-slate-400">{t('case.status')}</span>
                 <span className="font-medium text-amber-800 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/50 px-2 py-0.5 rounded border border-amber-200 dark:border-amber-800">
-                  {dispute.status}
+                  {dispute.status === 'WAITING_FOR_SELLER_RESPONSE'
+                    ? (language === 'es' ? 'Acción Requerida (Vendedor)' : 'Action Required (Seller)')
+                    : dispute.status.replace(/_/g, ' ')}
                 </span>
               </div>
               <div className="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800">
-                <span className="text-slate-500 dark:text-slate-400">Response Due:</span>
+                <span className="text-slate-500 dark:text-slate-400">{t('case.due')}</span>
                 <span className="font-mono text-slate-700 dark:text-slate-300">
                   {dispute.sellerResponseDueDate
-                    ? new Date(dispute.sellerResponseDueDate).toLocaleDateString()
-                    : 'N/A'}
+                    ? new Date(dispute.sellerResponseDueDate).toLocaleDateString(language === 'es' ? 'es-ES' : 'en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
+                      })
+                    : '—'}
                 </span>
               </div>
             </div>
 
             <div className="mt-5">
               <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
-                Buyer Message (Untrusted Data)
+                {t('case.buyerMessage')}
               </h4>
               <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
-                {dispute.messages[0]?.content || 'No message provided by buyer.'}
+                {dispute.messages[0]?.content || (language === 'es' ? 'Sin mensaje adjunto del comprador.' : 'No message provided by buyer.')}
               </div>
             </div>
           </div>
@@ -174,7 +212,7 @@ export function CaseView({ dispute, initialPackage }: CaseViewProps) {
               <div className="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs">
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                    Defense Strength & Recommendation
+                    {t('case.defense')}
                   </span>
                   <span
                     className={`text-xs font-bold uppercase px-2.5 py-0.5 rounded-full border ${strengthBadge}`}
@@ -193,7 +231,7 @@ export function CaseView({ dispute, initialPackage }: CaseViewProps) {
                 </div>
 
                 <div className="text-[11px] text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/60 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-700">
-                  Recommended Action:{' '}
+                  {t('case.recommended')}{' '}
                   <strong className="text-slate-900 dark:text-white uppercase font-mono">
                     {pkg.assessment.recommendation}
                   </strong>
@@ -207,10 +245,10 @@ export function CaseView({ dispute, initialPackage }: CaseViewProps) {
               <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
-                    Grounded Draft Response (Tokens Replaced)
+                    {t('case.draft')}
                   </h3>
                   <span className="text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-2 py-0.5 rounded">
-                    Zero Hallucination Code
+                    {language === 'es' ? 'Cero Alucinaciones' : 'Zero Hallucination Code'}
                   </span>
                 </div>
                 <div className="p-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-200 font-mono leading-relaxed">
@@ -224,18 +262,18 @@ export function CaseView({ dispute, initialPackage }: CaseViewProps) {
                 <IconShield size={24} />
               </div>
               <h3 className="text-base font-bold text-slate-900 dark:text-white">
-                Ready for AI Investigation
+                {t('case.readyTitle')}
               </h3>
               <p className="mt-2 text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto leading-relaxed">
-                Click &quot;Analyze with AI&quot; to launch the bounded agent loop. It will read the dispute, inspect documents, cross-check claims, and build a verifiable evidence package.
+                {t('case.readyDesc')}
               </p>
               <button
                 onClick={handleAnalyze}
                 disabled={isAnalyzing}
-                className="mt-5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-xl shadow-xs transition-colors inline-flex items-center gap-1.5"
+                className="mt-5 px-5 py-2.5 bg-[#0070BA] hover:bg-[#005EA6] text-white text-xs font-bold rounded-full shadow-xs hover:shadow-md transition-all inline-flex items-center gap-1.5 cursor-pointer"
               >
                 <IconBolt size={14} />
-                <span>{isAnalyzing ? 'Analyzing...' : 'Launch Investigation'}</span>
+                <span>{isAnalyzing ? t('case.thinking') : t('case.launch')}</span>
               </button>
             </div>
           )}

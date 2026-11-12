@@ -26,7 +26,7 @@ export function LiveResolutionTicker() {
       type: 'contradiction',
       messageEn: 'Contradicted buyer claim "never received": FedEx #1Z9999999999999999 confirms delivery to front porch.',
       messageEs: 'Reclamo "no recibido" contradicho: FedEx #1Z9999999999999999 confirma entrega en puerta principal.',
-      timestamp: 'Just now',
+      timestamp: language === 'es' ? 'Ahora' : 'Just now',
       statusBadge: 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/60 dark:text-rose-300 dark:border-rose-900',
     },
     {
@@ -35,7 +35,7 @@ export function LiveResolutionTicker() {
       type: 'draft',
       messageEn: 'Zero-hallucination draft response compiled with 100% cited token {{fact:F1}}.',
       messageEs: 'Borrador sin alucinaciones compilado con marcador citado {{fact:F1}} al 100%.',
-      timestamp: '2 min ago',
+      timestamp: language === 'es' ? 'Hace 2 min' : '2 min ago',
       statusBadge: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-900',
     },
     {
@@ -44,7 +44,7 @@ export function LiveResolutionTicker() {
       type: 'approval',
       messageEn: 'Merchant human-in-the-loop approved package. Registered via PayPal Provide-Evidence API (Sandbox Dry-Run).',
       messageEs: 'Aprobación humana completada. Registrado vía PayPal Provide-Evidence API (Sandbox Dry-Run).',
-      timestamp: '5 min ago',
+      timestamp: language === 'es' ? 'Hace 5 min' : '5 min ago',
       statusBadge: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-900',
     },
     {
@@ -53,7 +53,7 @@ export function LiveResolutionTicker() {
       type: 'read',
       messageEn: 'Extracted order receipts from PDF text layer: Confirmed 2 separate transaction invoices.',
       messageEs: 'Recibos extraídos de la capa de texto del PDF: Confirmadas 2 facturas de compra distintas.',
-      timestamp: '8 min ago',
+      timestamp: language === 'es' ? 'Hace 8 min' : '8 min ago',
       statusBadge: 'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/60 dark:text-purple-300 dark:border-purple-900',
     },
   ];

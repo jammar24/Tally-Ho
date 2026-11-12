@@ -131,3 +131,4 @@ export function maskCredential(cred?: string | null): string {
   if (cred.length <= 8) return '********';
   return `${cred.substring(0, 6)}...${cred.substring(cred.length - 4)}`;
 }
+

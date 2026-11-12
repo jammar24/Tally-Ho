@@ -241,7 +241,11 @@ export default function AuthPage() {
                 : 'Advanced Options & Test Personas (Optional)'}
             </span>
           </span>
-          <span className="text-[11px]">{showAdvanced ? '▲ Ocultar' : '▼ Ver'}</span>
+          <span className="text-[11px]">
+            {showAdvanced
+              ? (language === 'es' ? '▲ Ocultar' : '▲ Hide')
+              : (language === 'es' ? '▼ Ver' : '▼ Show')}
+          </span>
         </button>
 
         {showAdvanced && (

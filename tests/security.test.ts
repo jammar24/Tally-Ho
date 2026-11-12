@@ -56,3 +56,4 @@ describe('Cybersecurity Guardrails Suite', () => {
     expect(maskCredential(null)).toBe('Not configured');
   });
 });
+

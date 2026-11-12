@@ -125,31 +125,37 @@ export default function AboutPage() {
               Next.js 14 App Router
             </h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
-              TypeScript 5, Tailwind CSS with full dark mode support, and AG Grid Community for enterprise-grade dispute tables.
+              {language === 'es'
+                ? 'TypeScript 5, Tailwind CSS con soporte total para modo oscuro, y AG Grid Community para tablas de disputas de nivel empresarial.'
+                : 'TypeScript 5, Tailwind CSS with full dark mode support, and AG Grid Community for enterprise-grade dispute tables.'}
             </p>
           </div>
 
           <div className="p-6 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs">
             <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider block mb-1">
-              AI Engine &amp; Vision
+              {language === 'es' ? 'Motor de IA y Visión' : 'AI Engine & Vision'}
             </span>
             <h3 className="text-base font-bold text-slate-900 dark:text-white">
-              Provider-Agnostic LLM
+              {language === 'es' ? 'LLM Agnóstico de Proveedor' : 'Provider-Agnostic LLM'}
             </h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
-              Direct Gemini REST adapter with multimodal inline parsing, exact PDF text-layer verification, and 100% prompt injection resistance.
+              {language === 'es'
+                ? 'Adaptador directo Gemini REST con lectura multimodal inline, verificación exacta contra capa de texto PDF y resistencia del 100% ante inyecciones de prompt.'
+                : 'Direct Gemini REST adapter with multimodal inline parsing, exact PDF text-layer verification, and 100% prompt injection resistance.'}
             </p>
           </div>
 
           <div className="p-6 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs">
             <span className="text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider block mb-1">
-              Payments Platform
+              {language === 'es' ? 'Plataforma de Pagos' : 'Payments Platform'}
             </span>
             <h3 className="text-base font-bold text-slate-900 dark:text-white">
               PayPal Developer Sandbox
             </h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
-              OAuth 2.0, Customer Disputes APIv1, Orders v2 simulation, and Provide-Evidence endpoint integration with hard sandbox isolation.
+              {language === 'es'
+                ? 'OAuth 2.0, APIv1 de Disputas de Clientes, simulación de Órdenes v2 e integración del endpoint de Evidencias con aislamiento estricto de sandbox.'
+                : 'OAuth 2.0, Customer Disputes APIv1, Orders v2 simulation, and Provide-Evidence endpoint integration with hard sandbox isolation.'}
             </p>
           </div>
         </div>

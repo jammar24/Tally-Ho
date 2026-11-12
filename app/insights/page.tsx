@@ -136,7 +136,14 @@ export default function InsightsPage() {
                     {item.reason.replace(/_/g, ' ')}
                   </p>
                   <p className="text-xs text-slate-500 dark:text-slate-400">
-                    {item.count} {language === 'es' ? 'disputa' : 'dispute'}{item.count > 1 ? 's' : ''} in sandbox
+                    {item.count}{' '}
+                    {language === 'es'
+                      ? item.count > 1
+                        ? 'disputas en el sandbox'
+                        : 'disputa en el sandbox'
+                      : item.count > 1
+                      ? 'disputes in sandbox'
+                      : 'dispute in sandbox'}
                   </p>
                 </div>
                 <div className="text-right">
