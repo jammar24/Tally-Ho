@@ -160,11 +160,11 @@ Deploy Tally-Ho directly to **Vercel** with zero configuration:
    |---|---|---|
    | `PAYPAL_ENV` | `sandbox` | Strict sandbox enforcement lock |
    | `PAYPAL_API_BASE` | `https://api-m.sandbox.paypal.com` | Official PayPal Sandbox REST gateway |
-   | `PAYPAL_CLIENT_ID` | `BAAmRUlXk...` | Sandbox App Client ID |
-   | `PAYPAL_CLIENT_SECRET` | `EAL-1r9qo...` | Sandbox App Client Secret |
+   | `PAYPAL_CLIENT_ID` | `DFFFFFFF...` | Sandbox App Client ID |
+   | `PAYPAL_CLIENT_SECRET` | `DFFFFFFF...` | Sandbox App Client Secret |
    | `DATA_MODE` | `auto` | Auto-discovers sandbox disputes; falls back to demo data |
    | `LLM_PROVIDER` | `gemini` | Google AI Studio REST engine |
-   | `LLM_API_KEY` | `AQ.Ab8RN6...` | Google AI Studio API Key |
+   | `LLM_API_KEY` | `DFFFFFFF...` | Google AI Studio API Key |
    | `LLM_BASE_URL` | `https://generativelanguage.googleapis.com/v1beta` | Gemini API Base |
    | `LLM_MODEL_PRIMARY` | `gemini-3.1-flash-lite` | Primary reasoning model |
    | `LLM_MODEL_FAST` | `gemini-3.1-flash-lite` | Fast fallback model |
