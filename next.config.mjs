@@ -9,7 +9,6 @@ const nextConfig = {
   },
   experimental: {
     serverComponentsExternalPackages: ['pdf-parse'],
-    optimizePackageImports: ['ag-grid-react', 'ag-grid-community'],
   },
   // Enterprise Cybersecurity Headers
   async headers() {

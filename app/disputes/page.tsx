@@ -1,7 +1,19 @@
 import { getDisputes } from '@/lib/paypal';
-import { DisputeGrid } from '@/components/DisputeGrid';
+import nextDynamic from 'next/dynamic';
 import { InboxHeader } from '@/components/InboxHeader';
 import { LiveResolutionTicker } from '@/components/LiveResolutionTicker';
+
+const DisputeGrid = nextDynamic(
+  () => import('@/components/DisputeGrid').then((mod) => mod.DisputeGrid),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-[520px] rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex items-center justify-center text-xs text-slate-400 animate-pulse">
+        Cargando bandeja de disputas...
+      </div>
+    ),
+  }
+);
 
 export const dynamic = 'force-dynamic';
 
