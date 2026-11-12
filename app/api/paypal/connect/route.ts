@@ -1,11 +1,24 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import { checkRateLimit, validateSandboxUrl } from '@/lib/security';
 
 export const dynamic = 'force-dynamic';
 
 export async function POST(request: Request) {
   try {
+    // Rate Limiting Guardrail: Max 5 attempts per minute to mitigate brute-force
+    const rateCheck = checkRateLimit('paypal-connect-post', 5, 60 * 1000);
+    if (!rateCheck.allowed) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: `Demasiados intentos de conexión. Por seguridad espera ${rateCheck.resetInSec} segundos antes de reintentar.`,
+        },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
     const { clientId, clientSecret } = body;
 

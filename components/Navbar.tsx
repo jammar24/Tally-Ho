@@ -56,11 +56,10 @@ export function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`px-2 xl:px-2.5 py-1.5 text-xs font-medium rounded-lg transition-colors whitespace-nowrap ${
-                    isActive
-                      ? 'bg-blue-50 dark:bg-blue-950/60 text-[#0070BA] dark:text-blue-300 font-semibold'
-                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/70 dark:hover:bg-slate-800/60'
-                  }`}
+                  className={`px-2 xl:px-2.5 py-1.5 text-xs font-medium rounded-lg transition-colors whitespace-nowrap ${isActive
+                    ? 'bg-blue-50 dark:bg-blue-950/60 text-[#0070BA] dark:text-blue-300 font-semibold'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/70 dark:hover:bg-slate-800/60'
+                    }`}
                 >
                   {link.label}
                 </Link>
@@ -76,21 +75,19 @@ export function Navbar() {
           <div className="flex items-center bg-slate-100 dark:bg-slate-800/80 rounded-lg p-0.5 border border-slate-200 dark:border-slate-700 text-xs">
             <button
               onClick={() => setLanguage('en')}
-              className={`px-1.5 sm:px-2 py-0.5 rounded font-medium transition-colors text-[11px] sm:text-xs ${
-                language === 'en'
-                  ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-300 shadow-xs'
-                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-              }`}
+              className={`px-1.5 sm:px-2 py-0.5 rounded font-medium transition-colors text-[11px] sm:text-xs ${language === 'en'
+                ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-300 shadow-xs'
+                : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                }`}
             >
               EN
             </button>
             <button
               onClick={() => setLanguage('es')}
-              className={`px-1.5 sm:px-2 py-0.5 rounded font-medium transition-colors text-[11px] sm:text-xs ${
-                language === 'es'
-                  ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-300 shadow-xs'
-                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-              }`}
+              className={`px-1.5 sm:px-2 py-0.5 rounded font-medium transition-colors text-[11px] sm:text-xs ${language === 'es'
+                ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-300 shadow-xs'
+                : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                }`}
             >
               ES
             </button>
@@ -142,11 +139,11 @@ export function Navbar() {
           >
             {mobileMenuOpen ? (
               <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
               </svg>
             ) : (
               <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
               </svg>
             )}
           </button>
@@ -178,11 +175,10 @@ export function Navbar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
-                  isActive
-                    ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 font-semibold'
-                    : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
-                }`}
+                className={`block px-3 py-2 rounded-lg text-sm transition-colors ${isActive
+                  ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 font-semibold'
+                  : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                  }`}
               >
                 {link.label}
               </Link>

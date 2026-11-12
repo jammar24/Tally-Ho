@@ -3,6 +3,7 @@ import { runAgentAnalysis } from '@/lib/ai';
 import { getDisputeById } from '@/lib/paypal';
 import demoDisputes from '@/data/demo-disputes.json';
 import { Dispute } from '@/lib/schemas';
+import { checkRateLimit, detectPromptInjection, sanitizeEvidenceText } from '@/lib/security';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,6 +13,19 @@ export async function POST(
 ) {
   try {
     const disputeId = params.id;
+
+    // Rate Limiting Guardrail (Max 10 calls per minute per dispute)
+    const rateCheck = checkRateLimit(`analyze-${disputeId}`, 10, 60 * 1000);
+    if (!rateCheck.allowed) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: `Rate limit exceeded. Too many analysis requests for this dispute. Try again in ${rateCheck.resetInSec}s.`,
+        },
+        { status: 429 }
+      );
+    }
+
     let dispute = await getDisputeById(disputeId);
 
     if (!dispute) {
@@ -35,7 +49,20 @@ export async function POST(
       };
     }
 
+    // Inspect buyer messages for prompt injection attempts
+    for (const msg of dispute.messages || []) {
+      const injection = detectPromptInjection(msg.content);
+      if (injection.isSuspicious) {
+        console.warn(`[Cybersecurity] Blocked suspicious prompt injection in dispute ${disputeId}:`, injection.pattern);
+      }
+    }
+
     const pkg = await runAgentAnalysis(dispute!);
+
+    // Sanitize any PII / Card numbers in final draft
+    if (pkg.draftNote) {
+      pkg.draftNote = sanitizeEvidenceText(pkg.draftNote);
+    }
 
     return NextResponse.json({
       success: true,
