@@ -51,12 +51,12 @@ export function DocViewer({ facts }: DocViewerProps) {
               </span>
             </div>
 
-            <div className="text-sm font-semibold text-slate-900 dark:text-white font-mono my-1">
+            <div className="text-sm font-semibold text-slate-900 dark:text-white font-mono my-1 break-words break-all">
               {fact.value}
             </div>
 
             {fact.source.quote && (
-              <div className="mt-2 text-xs text-slate-600 dark:text-slate-300 bg-emerald-50/60 dark:bg-emerald-950/40 border-l-2 border-emerald-500 pl-2 py-1 font-mono">
+              <div className="mt-2 text-xs text-slate-600 dark:text-slate-300 bg-emerald-50/60 dark:bg-emerald-950/40 border-l-2 border-emerald-500 pl-2 py-1 font-mono break-words">
                 <span className="text-slate-400 block text-[10px] uppercase font-sans">
                   Quote:
                 </span>
@@ -64,7 +64,7 @@ export function DocViewer({ facts }: DocViewerProps) {
               </div>
             )}
 
-            <div className="mt-1.5 text-[11px] text-slate-400 flex items-center justify-between">
+            <div className="mt-1.5 text-[11px] text-slate-400 flex flex-wrap items-center justify-between gap-1 break-all">
               <span>Source: {fact.source.docId || fact.source.tool}</span>
               {fact.source.page && <span>Page {fact.source.page}</span>}
             </div>

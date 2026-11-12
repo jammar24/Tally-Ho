@@ -59,8 +59,8 @@ export default function OrdersPage() {
         </button>
 
         {orderResult && (
-          <div className="mt-4 p-4 rounded-lg bg-slate-900 dark:bg-slate-950 text-slate-100 font-mono text-xs overflow-x-auto border border-slate-700">
-            <pre>{JSON.stringify(orderResult, null, 2)}</pre>
+          <div className="mt-4 p-4 rounded-lg bg-slate-900 dark:bg-slate-950 text-slate-100 font-mono text-xs overflow-x-auto border border-slate-700 max-w-full">
+            <pre className="whitespace-pre-wrap break-words break-all">{JSON.stringify(orderResult, null, 2)}</pre>
           </div>
         )}
       </div>

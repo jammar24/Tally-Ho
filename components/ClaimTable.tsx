@@ -61,17 +61,17 @@ export function ClaimTable({ claimChecks }: ClaimTableProps) {
                       <span>{statusConfig.label}</span>
                     </span>
                   </div>
-                  <p className="text-sm text-slate-900 dark:text-slate-100 font-medium">
+                  <p className="text-sm text-slate-900 dark:text-slate-100 font-medium break-words">
                     {claim.claimText}
                   </p>
                   {claim.reasoning && (
-                    <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                    <p className="mt-1 text-xs text-slate-500 dark:text-slate-400 break-words">
                       {claim.reasoning}
                     </p>
                   )}
                 </div>
 
-                <div className="flex items-center gap-1">
+                <div className="flex flex-wrap items-center gap-1 shrink-0">
                   {claim.factIds.map((fid) => (
                     <span
                       key={fid}

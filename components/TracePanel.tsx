@@ -34,7 +34,7 @@ export function TracePanel({ trace, origin, modelInfo }: TracePanelProps) {
       </div>
 
       {modelInfo && (
-        <div className="text-[11px] text-slate-400 font-mono mb-3 bg-slate-950/50 p-2 rounded-xl border border-slate-800">
+        <div className="text-[11px] text-slate-400 font-mono mb-3 bg-slate-950/50 p-2 rounded-xl border border-slate-800 break-words break-all">
           {language === 'es' ? 'Proveedor:' : 'Provider:'}{' '}
           <span className="text-slate-200">{modelInfo.provider}</span> •{' '}
           {language === 'es' ? 'Modelo:' : 'Model:'}{' '}
@@ -49,17 +49,17 @@ export function TracePanel({ trace, origin, modelInfo }: TracePanelProps) {
             className="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700/60 hover:border-slate-600 transition-colors"
           >
             <div className="flex items-center justify-between mb-1.5">
-              <span className="text-blue-400 font-bold">
+              <span className="text-blue-400 font-bold break-all">
                 {language === 'es' ? 'Paso' : 'Step'} {step.n}: <span className="text-white">{step.tool}</span>
               </span>
-              <span className="text-slate-400 text-[10px]">{step.ms}ms</span>
+              <span className="text-slate-400 text-[10px] shrink-0">{step.ms}ms</span>
             </div>
 
-            <div className="text-slate-400 text-[11px] mb-1">
+            <div className="text-slate-400 text-[11px] mb-1 break-words break-all">
               <span className="text-slate-500">args:</span> {step.argsSummary}
             </div>
 
-            <div className="text-emerald-400 text-[11px] bg-slate-900/60 p-1.5 rounded-lg">
+            <div className="text-emerald-400 text-[11px] bg-slate-900/60 p-1.5 rounded-lg break-words break-all">
               <span className="text-slate-500">output:</span> {step.resultSummary}
             </div>
           </div>
