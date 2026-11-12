@@ -38,7 +38,8 @@ Thumbs.db
 tmp/
 *.tmp
 
-# Estudio documentation
+# Estudio documentation & project specification
 estudio/
+SPEC.md
 
 

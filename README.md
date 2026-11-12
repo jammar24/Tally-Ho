@@ -5,7 +5,9 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg?logo=typescript)](https://www.typescriptlang.org/)
 [![Vitest](https://img.shields.io/badge/Tests-21%2F21%20Passed-brightgreen.svg?logo=vitest)](https://vitest.dev/)
 [![Gemini AI](https://img.shields.io/badge/AI%20Engine-Gemini%203.1%20Flash%20Lite-4285F4.svg?logo=google&logoColor=white)](https://ai.google.dev/)
+[![Language: ES/EN](https://img.shields.io/badge/Language-English%20%7C%20Espa%C3%B1ol-10B981.svg)](https://github.com/jammar24/Tally-Ho)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fjammar24%2FTally-Ho)
 
 > **Repository**: [https://github.com/jammar24/Tally-Ho](https://github.com/jammar24/Tally-Ho)  
 > **Author**: Jamar Masias ([@jammar24](https://github.com/jammar24))  
@@ -141,6 +143,37 @@ All **21 unit & security tests** will run and pass:
 npm run dev
 ```
 Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
+
+## ⚡ 1-Click Vercel Deployment
+
+Deploy Tally-Ho directly to **Vercel** with zero configuration:
+
+1. Click the button below or import `jammar24/Tally-Ho` in your [Vercel Dashboard](https://vercel.com/new):
+
+   [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fjammar24%2FTally-Ho)
+
+2. Configure the following **Environment Variables** in Vercel (*Settings > Environment Variables*):
+
+   | Variable | Value | Description |
+   |---|---|---|
+   | `PAYPAL_ENV` | `sandbox` | Strict sandbox enforcement lock |
+   | `PAYPAL_API_BASE` | `https://api-m.sandbox.paypal.com` | Official PayPal Sandbox REST gateway |
+   | `PAYPAL_CLIENT_ID` | `BAAmRUlXk...` | Sandbox App Client ID |
+   | `PAYPAL_CLIENT_SECRET` | `EAL-1r9qo...` | Sandbox App Client Secret |
+   | `DATA_MODE` | `auto` | Auto-discovers sandbox disputes; falls back to demo data |
+   | `LLM_PROVIDER` | `gemini` | Google AI Studio REST engine |
+   | `LLM_API_KEY` | `AQ.Ab8RN6...` | Google AI Studio API Key |
+   | `LLM_BASE_URL` | `https://generativelanguage.googleapis.com/v1beta` | Gemini API Base |
+   | `LLM_MODEL_PRIMARY` | `gemini-3.1-flash-lite` | Primary reasoning model |
+   | `LLM_MODEL_FAST` | `gemini-3.1-flash-lite` | Fast fallback model |
+   | `MAX_AGENT_STEPS` | `6` | Safety bound on agent iterations |
+   | `MAX_LLM_CALLS_PER_ANALYSIS` | `12` | Maximum LLM queries per claim |
+   | `ANALYSIS_TIMEOUT_MS` | `60000` | 60-second execution cutoff |
+   | `DAILY_ANALYSIS_CAP` | `15` | Daily analysis quota safeguard |
+
+3. Click **Deploy**. Vercel will automatically build the Next.js App Router application in under 60 seconds.
 
 ---
 
