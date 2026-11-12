@@ -50,10 +50,12 @@ export async function POST(
     }
 
     // Inspect buyer messages for prompt injection attempts
-    for (const msg of dispute.messages || []) {
-      const injection = detectPromptInjection(msg.content);
-      if (injection.isSuspicious) {
-        console.warn(`[Cybersecurity] Blocked suspicious prompt injection in dispute ${disputeId}:`, injection.pattern);
+    if (dispute?.messages) {
+      for (const msg of dispute.messages) {
+        const injection = detectPromptInjection(msg.content);
+        if (injection.isSuspicious) {
+          console.warn(`[Cybersecurity] Blocked suspicious prompt injection in dispute ${disputeId}:`, injection.pattern);
+        }
       }
     }
 
