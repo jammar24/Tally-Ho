@@ -142,14 +142,17 @@ export function DisputeGrid({ disputes }: DisputeGridProps) {
     {
       headerName: language === 'es' ? 'Origen' : 'Origin',
       field: 'source',
-      width: 110,
-      minWidth: 100,
+      width: 135,
+      minWidth: 125,
       cellRenderer: (params: any) => {
         const isLive = params.value === 'paypal';
+        const label = isLive
+          ? (language === 'es' ? 'Sandbox Real' : 'Live Sandbox')
+          : 'Demo data';
         return (
-          <div className="flex items-center h-full">
+          <div className="flex items-center h-full pr-1">
             <span
-              className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold border transition-all shadow-2xs whitespace-nowrap ${
+              className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold border transition-all shadow-2xs whitespace-nowrap shrink-0 ${
                 isLive
                   ? 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800'
                   : 'bg-[#0070BA]/10 text-[#0070BA] dark:bg-[#0070BA]/20 dark:text-blue-300 border-[#0070BA]/30'
@@ -160,7 +163,7 @@ export function DisputeGrid({ disputes }: DisputeGridProps) {
                   isLive ? 'bg-emerald-500 animate-pulse' : 'bg-[#0070BA]'
                 }`}
               />
-              <span>{isLive ? 'Live' : 'Demo'}</span>
+              <span>{label}</span>
             </span>
           </div>
         );
@@ -168,9 +171,8 @@ export function DisputeGrid({ disputes }: DisputeGridProps) {
     },
     {
       headerName: language === 'es' ? 'Acción' : 'Action',
-      width: 120,
+      width: 125,
       minWidth: 115,
-      pinned: 'right',
       sortable: false,
       filter: false,
       cellRenderer: (params: any) => {

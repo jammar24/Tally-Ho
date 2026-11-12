@@ -11,6 +11,21 @@
   --border: 214.3 31.8% 91.4%;
 }
 
+/* AG Grid polish: prevent column text/badge clipping and ensure seamless row padding */
+.ag-theme-quartz,
+.ag-theme-quartz-dark {
+  --ag-font-size: 12.5px;
+  --ag-header-height: 44px;
+  --ag-row-height: 48px;
+  --ag-cell-horizontal-padding: 12px;
+}
+
+.ag-theme-quartz .ag-cell,
+.ag-theme-quartz-dark .ag-cell {
+  display: flex;
+  align-items: center;
+}
+
 body {
   color: hsl(var(--foreground));
   background: hsl(var(--background));
